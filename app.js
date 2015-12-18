@@ -4,6 +4,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var fs = require('fs');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -38,6 +40,15 @@ app.use(function(req, res, next) {
   next(err);
 });
 
+// connect mongoose
+if (app.get('env') === 'development') {
+  mongoose.connect('mongodb://localhost/shopping-list-dev');
+}
+
+// load all models in models dir
+fs.readdirSync(__dirname + '/models').forEach(function(filename){
+  if(~filename.indexOf('.js')) require(__dirname + '/models/' + filename);
+});
 // error handlers
 
 // development error handler

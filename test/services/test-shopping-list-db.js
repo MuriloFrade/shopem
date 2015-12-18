@@ -12,11 +12,9 @@ describe('shopping-list-db', function() {
         sharedWith: []
       };
       service.add(sl, function(err, result){
-        if (err) throw err;
+        assert.equal(null, err, 'err is not null');
         result.should.have.property('_id');
-        done();
       });
-
 
     });
   });
