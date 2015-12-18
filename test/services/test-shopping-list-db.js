@@ -1,9 +1,23 @@
-var assert = require('assert');
-describe('Array', function() {
-  describe('#indexOf()', function () {
-    it('should return -1 when the value is not present', function () {
-      assert.equal(-1, [1,2,3].indexOf(5));
-      assert.equal(-1, [1,2,3].indexOf(0));
+var assert = require('assert'),
+    should = require('should'),
+    service = require('../../services/shopping-list-db');
+
+describe('shopping-list-db', function() {
+  describe('#add', function () {
+    it('should return a new shoppingList without erros', function (done) {
+      var sl = {
+        title: 'title test',
+        itens: [],
+        ownerId: 'AAAAA',
+        sharedWith: []
+      };
+      service.add(sl, function(err, result){
+        if (err) throw err;
+        result.should.have.property('_id');
+        done();
+      });
+
+
     });
   });
 });

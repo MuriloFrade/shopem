@@ -29,11 +29,28 @@ var shoppingLists = [
   }
 ];
 
-function getListFromUser (userId, callback){
+function getAllFromUser (userId, callback){
   callback(null, shoppingLists);
+}
+function add (item, callback){
+  callback(null, item);
+}
+function get (item, callback){
+  callback(null, item);
+}
+
+function update (item, callback){
+  callback(null, item);
+}
+
+function remove (item, callback){
+  callback(null, item);
 }
 
 function addItem (item, callback){
+  callback(null, item);
+}
+function getItem (item, callback){
   callback(null, item);
 }
 
@@ -51,8 +68,13 @@ function markItemAsPurchased (item, callback){
 
 module.exports = (function(){
   return {
-    getListFromUser:      getListFromUser,
+    getAllFromUser:      getAllFromUser,
+    add:                  add,
+    get:                  get,
+    update:               update,
+    remove:               remove,
     addItem:              addItem,
+    getItem:              getItem,
     updateItem:           updateItem,
     removeItem:           removeItem,
     markItemAsPurchased:  markItemAsPurchased

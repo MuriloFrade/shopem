@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test":  "./node_modules/mocha/bin/mocha --recursive"
+    "test": "./node_modules/mocha/bin/mocha --recursive"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -17,6 +17,7 @@
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
-    "mocha": "^2.3.4"
+    "mocha": "^2.3.4",
+    "should": "^8.0.1"
   }
 }
