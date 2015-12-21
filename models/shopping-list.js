@@ -6,4 +6,6 @@ var shoppingListSchema = new mongoose.Schema({
   _sharedWith: [{type: Schema.Types.ObjectId, ref: 'User'}]
 });
 
-mongoose.model('ShoppingList', shoppingListSchema);
+var model = mongoose.model('ShoppingList', shoppingListSchema);
+
+module.exports = model;

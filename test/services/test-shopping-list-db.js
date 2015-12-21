@@ -8,13 +8,18 @@ describe('shopping-list-db', function() {
       var sl = {
         title: 'title test',
         itens: [],
-        ownerId: 'AAAAA',
-        sharedWith: []
+        _ownerId: 'AAAAA',
+        _sharedWith: []
       };
       service.add(sl, function(err, result){
         assert.equal(null, err, 'err is not null');
         result.should.have.property('_id');
       });
+    });
+  });
+  
+  describe('#remove', function () {
+    it('should remove the shoppingList created', function (done) {
 
     });
   });
