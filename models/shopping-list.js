@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-var shoppingListSchema = new mongoose.Schema({
+var Schema = mongoose.Schema;
+var shoppingListSchema = new Schema({
   title: String,
   itens: [],
   _ownerId: {type: Schema.Types.ObjectId, ref: 'User'},

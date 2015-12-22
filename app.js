@@ -46,9 +46,9 @@ if (app.get('env') === 'development') {
 }
 
 // load all models in models dir
-fs.readdirSync(__dirname + '/models').forEach(function(filename){
-  if(~filename.indexOf('.js')) require(__dirname + '/models/' + filename);
-});
+// fs.readdirSync(__dirname + '/models').forEach(function(filename){
+//   if(~filename.indexOf('.js')) require(__dirname + '/models/' + filename);
+// });
 // error handlers
 
 // development error handler
