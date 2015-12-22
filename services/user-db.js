@@ -9,22 +9,34 @@ function add (user, callback){
     callback(null, doc);
   });
 }
-function get (item, callback){
-  callback(null, item);
+// function get (item, callback){
+//   callback({}, null);
+// }
+function getByEmail (email, callback){
+  User.findOne({ email: email}, function(err, user){
+    if(err) callback(err, null);
+    callback(null, user);
+  });
 }
 
 function update (item, callback){
-  callback(null, item);
+  User.findOneAndUpdate({ _id: item._id }, item, function(err, user){
+    if(err) callback(err, null);
+    callback(null, user);
+  });
 }
 
 function remove (item, callback){
-  callback(null, item);
+  User.remove({_id: item._id}, function(err){
+    if(err) callback(err, item);
+    callback(null, null);
+  });
 }
 module.exports = (function(){
   return {
-    add:    add,
-    get:    get,
-    update: update,
-    remove: remove
+    add:          add,
+    getByEmail:   getByEmail,
+    update:       update,
+    remove:       remove
   };
 })();

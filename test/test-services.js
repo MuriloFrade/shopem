@@ -32,12 +32,12 @@ describe('services tests', function (){
       });
     });
 
-    describe('#get', function () {
+    describe('#getByEmail', function () {
       it('should return an user without erros', function (done) {
-
-        UserDbService.get(user, function(err, result){
+        UserDbService.getByEmail(userTest.email, function(err, result){
           should.equal(err, null);
-
+          result._id.equals(userTest._id).should.be.true();          
+          should.equal(result.email, userTest.email);
           done();
         });
       });
@@ -45,10 +45,14 @@ describe('services tests', function (){
 
     describe('#update', function () {
       it('should update an user without erros', function (done) {
-
-        UserDbService.update(user, function(err, result){
+        var userOld = userTest;
+        userOld.username = 'userTest2';
+        userOld.email = 'test2@test.com';
+        UserDbService.update(userTest, function(err, result){
+          userTest = result;
           should.equal(err, null);
-
+          should.equal(userOld.username, userTest.username);
+          should.equal(userOld.email, userTest.email);
           done();
         });
       });
@@ -56,10 +60,15 @@ describe('services tests', function (){
 
     describe('#remove', function () {
       it('should remove an user without erros', function (done) {
-
         UserDbService.remove(user, function(err, result){
           should.equal(err, null);
-
+          it('user should be null after delete', function(done){
+            UserDbService.getByEmail(userTest.email, function(err, result){
+              should.equal(err, null);
+              should.equal(result, null);
+              done();
+            });
+          });
           done();
         });
       });
@@ -70,6 +79,21 @@ describe('services tests', function (){
   // tests in shopping-list-db service
   describe('shopping-list-db', function() {
     var currentShoppingList = null;
+    before(function (done) {
+      var user = {
+        username: 'userTest',
+        email: 'test@test.com',
+        password: 'foo',
+      };
+      UserDbService.add(user, function (err, result){
+        userTest = result ;
+        done();
+      });
+    });
+
+    after(function (done) {
+      mongoose.disconnect(done);
+    });
 
     describe('#add', function () {
       it('should return a new shoppingList without erros', function (done) {
@@ -88,18 +112,25 @@ describe('services tests', function (){
     });
     describe('#get', function () {
       it('should retrieve a shoppingList', function (done) {
-        done();
+        ShoppingListDbService.get(n, function(err, result){
+          done();
+        });
       });
     });
     describe('#update', function () {
       it('should update a shoppingList', function (done) {
-        done();
+        ShoppingListDbService.update(n, function(err, result){
+          done();
+        });
+
       });
     });
 
     describe('#remove', function () {
       it('should remove the shoppingList', function (done) {
-        done();
+        ShoppingListDbService.remove(n, function(err, result){
+          done();
+        });
       });
     });
   });  // end shopping-list-db tests
