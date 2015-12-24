@@ -36,7 +36,7 @@ describe('services tests', function (){
       it('should return an user without erros', function (done) {
         UserDbService.getByEmail(userTest.email, function(err, result){
           should.equal(err, null);
-          result._id.equals(userTest._id).should.be.true();          
+          result._id.equals(userTest._id).should.be.true();
           should.equal(result.email, userTest.email);
           done();
         });
@@ -44,33 +44,46 @@ describe('services tests', function (){
     });
 
     describe('#update', function () {
-      it('should update an user without erros', function (done) {
-        var userOld = userTest;
-        userOld.username = 'userTest2';
-        userOld.email = 'test2@test.com';
+      it('should update an user', function (done) {
+        userTest.username = 'userTest2';
+        userTest.email = 'test2@test.com';
         UserDbService.update(userTest, function(err, result){
-          userTest = result;
           should.equal(err, null);
-          should.equal(userOld.username, userTest.username);
-          should.equal(userOld.email, userTest.email);
-          done();
+          should.equal(userTest.username, result.username);
+          should.equal(userTest.email, result.email);
+          // get back to the original user
+          userTest.username = 'userTest';
+          userTest.email = 'test@test.com';
+          UserDbService.update(userTest, function(err, result){
+            done();
+          });
         });
       });
     });
 
     describe('#remove', function () {
       it('should remove an user without erros', function (done) {
-        UserDbService.remove(user, function(err, result){
-          should.equal(err, null);
-          it('user should be null after delete', function(done){
-            UserDbService.getByEmail(userTest.email, function(err, result){
-              should.equal(err, null);
-              should.equal(result, null);
-              done();
+        var userToDelete = {
+          username: 'Delete Me',
+          email: 'delete@me.com',
+          password: 'foo',
+        };
+        // saving the user and after delete him
+        UserDbService.add(userToDelete, function(err, user) {
+          UserDbService.remove(user, function(err, result){
+            should.equal(err, null);
+            should.equal(result, null);
+            it('user should be null after delete', function(done){
+              UserDbService.getByEmail(userToDelete.email, function(err, result){
+                should.equal(err, null);
+                should.equal(result, null);
+                done();
+              });
             });
+            done();
           });
-          done();
         });
+
       });
     });
 

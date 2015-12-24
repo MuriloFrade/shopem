@@ -20,7 +20,7 @@ function getByEmail (email, callback){
 }
 
 function update (item, callback){
-  User.findOneAndUpdate({ _id: item._id }, item, function(err, user){
+  User.findOneAndUpdate({ _id: item._id }, item, { new: true }, function(err, user){
     if(err) callback(err, null);
     callback(null, user);
   });
