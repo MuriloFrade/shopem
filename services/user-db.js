@@ -26,8 +26,8 @@ function update (item, callback){
   });
 }
 
-function remove (item, callback){
-  User.remove({_id: item._id}, function(err){
+function remove (id, callback){
+  User.remove({_id: id}, function(err){
     if(err) callback(err, item);
     callback(null, null);
   });

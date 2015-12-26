@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var config = require('config');
 var fs = require('fs');
 
 var routes = require('./routes/index');
@@ -42,7 +43,7 @@ app.use(function(req, res, next) {
 
 // connect mongoose
 if (app.get('env') === 'development') {
-  mongoose.connect('mongodb://localhost/shopping-list-dev');
+  mongoose.connect(config.db.development);
 }
 
 // load all models in models dir

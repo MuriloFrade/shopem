@@ -1,13 +1,27 @@
 var assert = require('assert'),
     should = require('should'),
     mongoose = require('mongoose'),
+    config = require('../config'),
     ShoppingListDbService = require('../services/shopping-list-db'),
     UserDbService = require('../services/user-db');
+
+// delete all test data created in the database test during unit tests that failed
+function cleanTestData(callback){
+  UserDbService.getByEmail('test@test.com', function(err, result){
+    if(result){
+      UserDbService.remove(result, callback);
+    }else{
+      callback();
+    }
+  });
+}
 
 describe('services tests', function (){
   var userTest = null;
   before(function (done) {
-    mongoose.connect('mongodb://localhost/shopping-list-tests', done);
+    mongoose.connect(config.db.test, function(){
+      cleanTestData(done);
+    });
   });
 
   after(function (done) {
@@ -63,27 +77,18 @@ describe('services tests', function (){
 
     describe('#remove', function () {
       it('should remove an user without erros', function (done) {
-        var userToDelete = {
-          username: 'Delete Me',
-          email: 'delete@me.com',
-          password: 'foo',
-        };
-        // saving the user and after delete him
-        UserDbService.add(userToDelete, function(err, user) {
-          UserDbService.remove(user, function(err, result){
-            should.equal(err, null);
-            should.equal(result, null);
-            it('user should be null after delete', function(done){
-              UserDbService.getByEmail(userToDelete.email, function(err, result){
-                should.equal(err, null);
-                should.equal(result, null);
-                done();
-              });
+        UserDbService.remove(userTest._id, function(err, result){
+          should.equal(err, null);
+          should.equal(result, null);
+          it('user should be null after delete', function(done){
+            UserDbService.getByEmail(userTest.email, function(err, result){
+              should.equal(err, null);
+              should.equal(result, null);
+              done();
             });
-            done();
           });
+          done();
         });
-
       });
     });
 
@@ -105,7 +110,9 @@ describe('services tests', function (){
     });
 
     after(function (done) {
-      mongoose.disconnect(done);
+      UserDbService.remove(userTest, function (){
+        mongoose.disconnect(done);
+      });
     });
 
     describe('#add', function () {
@@ -119,33 +126,87 @@ describe('services tests', function (){
         ShoppingListDbService.add(sl, function(err, result){
           should.equal(err, null);
           result.should.have.property('_id');
+          should.equal(result._ownerId, userTest._id);
+          currentShoppingList = result;
           done();
         });
       });
     });
     describe('#get', function () {
       it('should retrieve a shoppingList', function (done) {
-        ShoppingListDbService.get(n, function(err, result){
+        ShoppingListDbService.get(currentShoppingList._id, function(err, result){
+          should.equal(err, null);
+          result._id.equals(currentShoppingList._id).should.be.true();
           done();
         });
       });
     });
     describe('#update', function () {
       it('should update a shoppingList', function (done) {
-        ShoppingListDbService.update(n, function(err, result){
+        currentShoppingList.title = 'testTitle2';
+        ShoppingListDbService.update(currentShoppingList, function(err, result){
+          should.equal(err, null);
+          should.equal(currentShoppingList.title, result.title);
           done();
         });
 
+      });
+    });
+
+    describe('#addItem', function () {
+      it('should add an item to the shoppingList test', function (done) {
+        var item = {
+          title: '12 oranges',
+          detail: 'Should prefer buy oranges from Brazil',
+          wasPurchased: false,
+        };
+        ShoppingListDbService.addItem(currentShoppingList._id, item, function(err, shoppingList){
+          should.equal(err, null);
+          should.equal(item.title, shoppingList.itens[0].title);
+          currentShoppingList = shoppingList;
+          done();
+        });
+      });
+    });
+
+    describe('#updateItem', function () {
+      it('should update an item of the shoppingList', function (done) {
+        var item = currentShoppingList.itens[0];
+        item.title = '10 apples';
+        ShoppingListDbService.updateItem(currentShoppingList._id, item._id, item, function(err, shoppingList){
+          should.equal(err, null);
+          should.equal(item.title, shoppingList.itens[0].title);
+          done();
+        });
+      });
+    });
+
+    describe('#removeItem', function () {
+      it('should remove an item from shoppingList', function (done) {
+        var item = currentShoppingList.itens[0];
+        ShoppingListDbService.removeItem(currentShoppingList._id, item._id, function(err, shoppingList){
+          should.equal(err, null);
+          var itemIdex = shoppingList.itens.findIndex(function (e) {
+            if(e._id.equals(item._id)){
+              return true;
+            }
+          });
+          should.equal(itemIdex, -1);
+          done();
+        });
       });
     });
 
     describe('#remove', function () {
       it('should remove the shoppingList', function (done) {
-        ShoppingListDbService.remove(n, function(err, result){
+        ShoppingListDbService.remove(currentShoppingList._id, function(err, result){
+          should.equal(err, null);
+          should.equal(result, null);
           done();
         });
       });
     });
+
   });  // end shopping-list-db tests
 
 }); // end service-tests
