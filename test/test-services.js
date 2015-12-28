@@ -207,6 +207,7 @@ describe('services tests', function (){
       });
     });
 
+
   });  // end shopping-list-db tests
 
 }); // end service-tests

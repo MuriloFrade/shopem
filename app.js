@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var config = require('config');
+var config = require('./config');
 var fs = require('fs');
 
 var routes = require('./routes/index');
@@ -44,12 +44,10 @@ app.use(function(req, res, next) {
 // connect mongoose
 if (app.get('env') === 'development') {
   mongoose.connect(config.db.development);
+}else if(app.get('env') === 'test'){
+  mongoose.connect(config.db.test);
 }
 
-// load all models in models dir
-// fs.readdirSync(__dirname + '/models').forEach(function(filename){
-//   if(~filename.indexOf('.js')) require(__dirname + '/models/' + filename);
-// });
 // error handlers
 
 // development error handler
