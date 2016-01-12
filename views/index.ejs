@@ -7,5 +7,12 @@
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+    <% if (user){ %>
+          <p>Hi, I am <%= user.username %></p>
+          <a href="/logout">Logout</a>
+    <% }%>
+    <% if (!user){ %>
+          <a href="/register">Register</a> or <a href="/login">Login!</a>
+    <% }%>
   </body>
 </html>

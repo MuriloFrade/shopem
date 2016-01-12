@@ -7,7 +7,7 @@ var assert = require('assert'),
 
 // delete all test data created in the database test during unit tests that failed
 function cleanTestData(callback){
-  UserDbService.getByEmail('test@test.com', function(err, result){
+  UserDbService.getByUsername('test@test.com', function(err, result){
     if(result){
       UserDbService.remove(result, callback);
     }else{
@@ -34,7 +34,6 @@ describe('services tests', function (){
       it('should return a new user without erros', function (done) {
         var user = {
           username: 'userTest',
-          email: 'test@test.com',
           password: 'foo',
         };
         UserDbService.add(user, function(err, result){
@@ -46,12 +45,12 @@ describe('services tests', function (){
       });
     });
 
-    describe('#getByEmail', function () {
+    describe('#getByUsername', function () {
       it('should return an user without erros', function (done) {
-        UserDbService.getByEmail(userTest.email, function(err, result){
+        UserDbService.getByUsername(userTest.username, function(err, result){
           should.equal(err, null);
           result._id.equals(userTest._id).should.be.true();
-          should.equal(result.email, userTest.email);
+          should.equal(result.username, userTest.username);
           done();
         });
       });
@@ -59,15 +58,14 @@ describe('services tests', function (){
 
     describe('#update', function () {
       it('should update an user', function (done) {
-        userTest.username = 'userTest2';
-        userTest.email = 'test2@test.com';
+        //userTest.username = 'userTest2';
+        userTest.username = 'test2@test.com';
         UserDbService.update(userTest, function(err, result){
           should.equal(err, null);
+          //should.equal(userTest.username, result.username);
           should.equal(userTest.username, result.username);
-          should.equal(userTest.email, result.email);
           // get back to the original user
           userTest.username = 'userTest';
-          userTest.email = 'test@test.com';
           UserDbService.update(userTest, function(err, result){
             done();
           });
@@ -81,7 +79,7 @@ describe('services tests', function (){
           should.equal(err, null);
           should.equal(result, null);
           it('user should be null after delete', function(done){
-            UserDbService.getByEmail(userTest.email, function(err, result){
+            UserDbService.getByUsername(userTest.username, function(err, result){
               should.equal(err, null);
               should.equal(result, null);
               done();
@@ -100,7 +98,6 @@ describe('services tests', function (){
     before(function (done) {
       var user = {
         username: 'userTest',
-        email: 'test@test.com',
         password: 'foo',
       };
       UserDbService.add(user, function (err, result){
@@ -141,10 +138,20 @@ describe('services tests', function (){
         });
       });
     });
+    describe('#getAllFromUser', function () {
+      it('should retrieve a collection of shoppingLists from user', function (done) {
+        ShoppingListDbService.getAllFromUser(userTest._id, function(err, result){
+          should.equal(err, null);
+          done();
+        });
+      });
+    });
+
+
     describe('#update', function () {
       it('should update a shoppingList', function (done) {
         currentShoppingList.title = 'testTitle2';
-        ShoppingListDbService.update(currentShoppingList, function(err, result){
+        ShoppingListDbService.update(currentShoppingList._id, currentShoppingList, function(err, result){
           should.equal(err, null);
           should.equal(currentShoppingList.title, result.title);
           done();

@@ -7,9 +7,15 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./config');
 var fs = require('fs');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var expressSession = require('express-session');
+var flash = require('connect-flash');
+var utils = require('./utils');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var usersRoutes = require('./routes/users');
+var shoppingListRoutes = require('./routes/shopping-list');
 
 var app = express();
 
@@ -23,16 +29,38 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(expressSession({
+  secret: process.env.SESSION_SECRET || 'secret',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(flash());
+
+// // passport authentication middlewares and config
+app.use(passport.initialize());
+app.use(passport.session());
+
+var User = require('./models/user');
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+// end passport config
+
 app.use(require('node-sass-middleware')({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
   indentedSyntax: true,
   sourceMap: true
 }));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// routes middlewares
 app.use('/', routes);
-app.use('/users', users);
+app.use('/users', usersRoutes);
+app.use('/shoppinglists', utils.loggedIn, shoppingListRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -54,7 +82,7 @@ if (app.get('env') === 'development') {
 // will print stacktrace
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
+    res.status(err.status || 500 || 400);
     res.render('error', {
       message: err.message,
       error: err
