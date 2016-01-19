@@ -16,6 +16,7 @@ var utils = require('./utils');
 var routes = require('./routes/index');
 var usersRoutes = require('./routes/users');
 var shoppingListRoutes = require('./routes/shopping-list');
+var appRoutes = require('./routes/app');
 
 var app = express();
 
@@ -55,12 +56,14 @@ app.use(require('node-sass-middleware')({
 }));
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname + '/bower_components'));
 
 
 // routes middlewares
 app.use('/', routes);
 app.use('/users', usersRoutes);
 app.use('/shoppinglists', utils.loggedIn, shoppingListRoutes);
+app.use('/app', utils.loggedIn, appRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

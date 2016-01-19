@@ -44,6 +44,8 @@ describe('routes tests', function () {
     server.close(done);
   });
 
+/**************    ROUTES INDEX    ****************/
+
   describe('route:  / ', function (){
 
     describe('GET /register', function(){
@@ -147,6 +149,8 @@ describe('routes tests', function () {
 
   }); // end: route:  /
 
+/**************  ROUTES SHOPPINGLISTS    ****************/
+
   describe('route: /shoppinglists', function (){
 
     before(function (done) {
@@ -224,7 +228,7 @@ describe('routes tests', function () {
       });
     });
 
-    /* ========== ITENS ROUTES TESTS =============== */
+    /**************  ROUTES SHOPPINGLISTS ITENS   ****************/
 
     describe('GET /shoppinglists/:id/itens', function(){
       it('respond with 200 status code and a list with one item', function(done){
@@ -307,6 +311,20 @@ describe('routes tests', function () {
           });
       });
     });
+    /*********************  ROUTES APP     *********************/
+
+    describe('routes /app', function(){
+      describe('GET /app', function(){
+        it('respond with a page', function(done){
+          request
+            .get('/app')
+            .expect('Content-Type', /text\/html/, done);            
+        });
+      });
+    });
+
+    /***********************************************************/
+    // delete the shopping at the end of all tests
     describe('DELETE /shoppinglists/:id', function(){
       it('respond with 200 status code', function(done){
         request
@@ -320,5 +338,7 @@ describe('routes tests', function () {
     });
 
   }); //end :route: /shoppinglists
+
+
 
 });
