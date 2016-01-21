@@ -1,0 +1,40 @@
+.list {
+  width: 250px;
+  background-color: #ecf0f1;
+  border: 2px solid #E6E6E6;
+  border-radius: 5px;
+}
+
+.list .header {
+  background-color: #bdc3c7;
+  padding: 10px;
+  /*border-bottom: 2px solid #bdc3c7;*/
+}
+
+.list .header h1 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.items-list {
+  padding: 0
+}
+
+.items-list .item{
+  padding: 0;
+  background: #DDD;
+  margin: 5px;
+  border: 1px solid #DDD;
+  border-radius: 5px;
+  border-bottom: 1px solid #bdc3c7;
+}
+
+.items-list .item .checkbox{
+
+}
+
+.items-list .item h3{
+  /*padding: 0px;*/
+  margin: 10px;
+  font-size: 16px;
+}
