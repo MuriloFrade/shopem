@@ -22,30 +22,11 @@
 
 
     <!-- app styles -->
-    <link href="/stylesheets/list.css" rel="stylesheet" >
+    <link href="/stylesheets/style.css" rel="stylesheet" >
   </head>
   <body>
 
-    <div class="list">
-      <div class="header">
-          <h1>Supermarket</h1>
-      </div>
-
-      <div class="items-list">
-        <div class="item">
-          <span class="ckeckbox">
-            <i class="fa fa-square-o fa-2x"></i>
-          </span>
-          <h3>Item title</h3>
-        </div>
-        <div class="item">
-          <h3>Item title</h3>
-        </div>
-        <div class="item">
-          <h3>Item title</h3>
-        </div>
-      </div>
-    </div>
+    <list> </list>
     <div class="" ng-view></div>
 
 
@@ -70,6 +51,10 @@
 
     <!-- app controllers -->
     <script src="/app/controllers/index-ctrl.js"></script>
+
+    <!-- app directives -->
+    <script src="/app/directives/list.js"></script>
+    
 
   </body>
 </html>

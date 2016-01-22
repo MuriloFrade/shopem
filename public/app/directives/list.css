@@ -1,0 +1,75 @@
+.list {
+  display: inline-block;
+  margin: 10px;
+  width: 250px;
+  background-color: #ecf0f1;
+  border: 1px solid #bdc3c7;
+  border-radius: 5px;
+}
+
+.list .header {
+  background-color: #bdc3c7;
+  padding: 10px;
+  border-bottom: 1px solid #A4A4A4;;
+}
+
+.list .header h1 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.list .header h1 i{
+  float: right;
+  color: #515151;
+}
+.list .header h1 i:hover{
+  cursor: pointer;
+  color: #0E0E0E;
+}
+
+.items-list {
+  padding: 5px;
+}
+
+.items-list .item{
+  padding: 10px;
+  margin-top: 5px;
+  background: #DDD;
+  border: 1px solid #DDD;
+  border-radius: 5px;
+  border-bottom: 2px solid #bdc3c7;
+}
+
+.items-list .item:hover {
+  cursor: pointer;
+  background: #bdc3c7;
+}
+
+.items-list .item .ckeckbox i{
+  margin-right: 5px;
+  vertical-align: middle;
+}
+.items-list .item .ckeckbox i:hover{
+  font-weight: 600;
+}
+
+.items-list .item h3{
+  margin: 0px 0px;
+  font-size: 16px;
+  display: inline-block;
+}
+
+.items-list .item .details i{
+  float: right;
+  vertical-align: middle;
+
+}
+
+.items-list .add-item {
+  text-align: center;
+  margin-top: 5px;
+}
+.items-list .add-item i:hover {
+  cursor: pointer;
+  color: #0E0E0E;
+}
