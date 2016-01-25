@@ -5,6 +5,7 @@
   background-color: #ecf0f1;
   border: 1px solid #bdc3c7;
   border-radius: 5px;
+  float: left;
 }
 
 .list .header {

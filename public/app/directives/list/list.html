@@ -1,0 +1,23 @@
+<div class="list">
+  <div class="header">
+      <h1>{{data.title}}<i class="fa fa-pencil"></i></h1>
+  </div>
+
+  <div class="items-list">
+    <div ng-repeat="item in data.items">
+      <div class="item">
+        <span class="ckeckbox">
+          <i class="fa fa-2x" ng-class=" item.wasPurchased ? 'fa-check-square-o' : 'fa-square-o' "></i>
+        </span>
+        <h3>{{item.title}}</h3>
+        <span class="details" ng-show="item.detail">
+          <i class="fa fa-comment-o "></i>
+        </span>
+      </div>
+    </div>
+
+    <div class="add-item">
+      <span class="ckeckbox"><i class="fa fa-plus-circle fa-3x "></i></span>
+    </div>
+  </div>   <!--end div items-list -->
+</div>

@@ -8,15 +8,14 @@
     var shoppingLists = [
       {
         title: 'Supermarket',
-        itens: [
+        items: [
           {
             title: '12 oranges',
             detail: 'Should prefer buy oranges from Brazil',
-            wasPurchased: false,
+            wasPurchased: true,
           },
           {
             title: '1 brown bread',
-            detail: '',
             wasPurchased: false,
           },
           {
@@ -26,6 +25,31 @@
           },
           {
             title: '12 oranges',
+            wasPurchased: true,
+          },
+        ],
+        ownerId: '123123',
+        sharedWith: []
+      },
+      {
+        title: 'Ebay',
+        items: [
+          {
+            title: '1 oranges',
+            detail: 'Should prefer buy oranges from Brazil',
+            wasPurchased: false,
+          },
+          {
+            title: '19 brown bread',
+            wasPurchased: true,
+          },
+          {
+            title: '29 Axe Deodorants',
+            detail: 'Should prefer aerosol types',
+            wasPurchased: false,
+          },
+          {
+            title: '102 oranges',
             detail: 'Should prefer buy oranges from Brazil',
             wasPurchased: false,
           },
@@ -37,7 +61,7 @@
     function indexCtrl($scope) {
       var vm = this; // jshint ignore:line
       vm.hello = "Message from controller";
-      vm.items = shoppingLists;
+      vm.lists = shoppingLists;
 
         // $scope.pageClass = 'page-home';
         // $scope.loadingMovies = true;
