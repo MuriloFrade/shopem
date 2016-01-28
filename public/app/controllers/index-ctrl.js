@@ -7,23 +7,28 @@
 
     var shoppingLists = [
       {
+        _id: '13131312312',
         title: 'Supermarket',
         items: [
           {
+            _id: '131aaa312312',
             title: '12 oranges',
             detail: 'Should prefer buy oranges from Brazil',
             wasPurchased: true,
           },
           {
+            _id: '13131312312zzzz',
             title: '1 brown bread',
             wasPurchased: false,
           },
           {
+            _id: '13131rttrr312312',
             title: '2 Axe Deodorants',
             detail: 'Should prefer aerosol types',
             wasPurchased: false,
           },
           {
+            _id: '131trewtrwe31312312',
             title: '12 oranges',
             wasPurchased: true,
           },
@@ -32,23 +37,28 @@
         sharedWith: []
       },
       {
+        _id: '13asdadsa2312',
         title: 'Ebay',
         items: [
           {
+            _id: '131313qqqqq12312',
             title: '1 oranges',
             detail: 'Should prefer buy oranges from Brazil',
             wasPurchased: false,
           },
           {
+            _id: '13tes131312312',
             title: '19 brown bread',
             wasPurchased: true,
           },
           {
+            _id: '1313134325312312',
             title: '29 Axe Deodorants',
             detail: 'Should prefer aerosol types',
             wasPurchased: false,
           },
           {
+            _id: '1313131sfsd2312',
             title: '102 oranges',
             detail: 'Should prefer buy oranges from Brazil',
             wasPurchased: false,
@@ -62,7 +72,24 @@
       var vm = this; // jshint ignore:line
       vm.hello = "Message from controller";
       vm.lists = shoppingLists;
+      vm.listOptions = {
+        addItem: listAddBtn,
+        itemClick: listItemClick,
+        checkClick: listCheckClick,
 
+      };
+
+      function listAddBtn(id){
+        console.log("add button clicked on list " + id);
+      }
+
+      function listItemClick(id){
+        console.log("item clicked " + id);
+      }
+
+      function listCheckClick(id){
+        console.log("checkbox clicked on item " + id);
+      }
         // $scope.pageClass = 'page-home';
         // $scope.loadingMovies = true;
         // $scope.loadingGenres = true;

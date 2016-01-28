@@ -9,7 +9,8 @@
       replace: true,
       templateUrl: '/app/directives/list/list.html',
       scope: {
-        data: '='
+        data: '=',
+        options: '='
       }
     };
   }

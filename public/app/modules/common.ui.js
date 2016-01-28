@@ -1,6 +1,6 @@
 (function () {
     'use strict';
 
-    angular.module('common.ui', ['ui.bootstrap', 'ui.sortable']);
+    angular.module('common.ui', []);
 
 })();

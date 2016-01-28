@@ -16,6 +16,7 @@
 
 .list .header h1 {
   font-size: 20px;
+  font-weight: 400;
   margin: 0;
 }
 
@@ -57,6 +58,7 @@
 .items-list .item h3{
   margin: 0px 0px;
   font-size: 16px;
+  font-weight: 400;
   display: inline-block;
 }
 
