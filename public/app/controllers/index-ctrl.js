@@ -72,6 +72,15 @@
       var vm = this; // jshint ignore:line
       vm.hello = "Message from controller";
       vm.lists = shoppingLists;
+
+      vm.showListModal = function(){
+        vm.shownListModal = true;
+      };
+
+      vm.createList = function(){
+
+      };
+
       vm.listOptions = {
         addItem: listAddBtn,
         itemClick: listItemClick,
