@@ -19,10 +19,13 @@
   font-weight: 400;
   margin: 0;
 }
-
 .list .header h1 i{
   float: right;
   color: #515151;
+  visibility: hidden;
+}
+.list .header:hover h1 i{
+  visibility: visible;
 }
 .list .header h1 i:hover{
   cursor: pointer;
@@ -31,6 +34,8 @@
 
 .items-list {
   padding: 5px;
+  max-height: 400px;
+  overflow: auto;
 }
 
 .items-list .item{
@@ -65,14 +70,18 @@
 .items-list .item .details i{
   float: right;
   vertical-align: middle;
-
+  visibility:hidden;
+}
+.items-list .item:hover .details i{
+  visibility:visible;
 }
 
-.items-list .add-item {
+.list .add-item {
   text-align: center;
-  margin-top: 5px;
+  margin: 5px;
+  opacity: 0.8;
 }
-.items-list .add-item i:hover {
+.list .add-item i:hover {
   cursor: pointer;
   color: #0E0E0E;
 }

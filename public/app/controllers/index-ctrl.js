@@ -9,6 +9,7 @@
       {
         _id: '13131312312',
         title: 'Supermarket',
+        color: '#3498db',
         items: [
           {
             _id: '131aaa312312',
@@ -39,6 +40,7 @@
       {
         _id: '13asdadsa2312',
         title: 'Ebay',
+        color: '#e74c3c',
         items: [
           {
             _id: '131313qqqqq12312',
@@ -69,36 +71,111 @@
       }
     ];
     function indexCtrl($scope) {
+      // View Model !
       var vm = this; // jshint ignore:line
-      vm.hello = "Message from controller";
+      // lists to render the lists directives
       vm.lists = shoppingLists;
-
+      vm.listColors = ['#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e',
+            '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f',
+            '#e67e22', '#e74c3c', '#ecf0f1', '#95a5a6', '#f39c12', '#d35400',
+            '#c0392b', '#bdc3c7', '#7f8c8d'];
+            
+      // called when the user clicks on button to create a new list
       vm.showListModal = function(){
-        vm.shownListModal = true;
+        showModal('shownNewListModal');
       };
-
+      // called when the form for create a list is submmited
       vm.createList = function(){
+        // JUST FOR TESTS!
+          vm.listToCreate._id = vm.listToCreate.title;
+          vm.listToCreate.items = [];
+        // --------------------------!!!!!!!!!!!!!!!
+        vm.lists.push(vm.listToCreate);
+        vm.listToCreate = {};
+        hideModal('shownNewListModal');
+      };
+      // called when the form for edit a list is submmited
+      vm.editList = function(){
+        vm.listToEdit = {};
+        hideModal('shownEditListModal');
+      };
+      // called when the user clicks on the trash icon inside the edit modal
+      vm.showConfirmDeleteListModal = function(){
+        vm.listToDelete = vm.listToEdit;
+        hideModal('shownEditListModal');
+        showModal('shownConfirmDeleteListModal');
+      };
+      // function called when the user clicks on button "Yes!" to confirm to delete a list
+      vm.deleteList = function(){
+        var itemIdex = vm.lists.findIndex(function (e) {
+          if(e._id == vm.listToDelete._id){
+            return true;
+          }
+        });
+        vm.lists.splice(itemIdex, 1);
+        vm.listToDelete = {};
+        hideModal('shownConfirmDeleteListModal');
+      };
+      // called when the form for create an item list is submmited
+      vm.createItemList = function(){
+        // JUST FOR TESTS!
+        vm.itemListToCreate._id = vm.itemListToCreate.title;
+        // --------------------------!!!!!!!!!!!!!!!
 
+        vm.listToAddItem.items.push(vm.itemListToCreate);
+        hideModal('shownNewItemListModal');
+      };
+      // called whe the form for edit an item list is submmited
+      vm.editItemList = function(){
+        hideModal('shownEditItemListModal');
+      };
+      // called when the user clicks on the trash icon inside the edit modal
+      vm.showConfirmDeleteItemListModal = function(){
+        vm.itemListToDelete = vm.itemListToEdit;
+        hideModal('shownEditItemListModal');
+        showModal('shownConfirmDeleteItemListModal');
+      };
+      // function called when the user clicks on button "Yes!" to confirm to delete an item list
+      vm.deleteItemList = function(){
+        var itemIdex = vm.itemListToDelete.list.items.findIndex(function (e) {
+          if(e._id == vm.itemListToDelete.item._id){
+            return true;
+          }
+        });
+        vm.itemListToDelete.list.items.splice(itemIdex, 1);
+        hideModal('shownConfirmDeleteItemListModal');
       };
 
+      // options used in list directive
       vm.listOptions = {
-        addItem: listAddBtn,
-        itemClick: listItemClick,
-        checkClick: listCheckClick,
-
+        editList: listEditBtn, // pencil button click action
+        addItem: listAddBtn, // plus button click action
+        itemClick: listItemClick, // click action
+        checkClick: listCheckClick, // click action
       };
 
-      function listAddBtn(id){
-        console.log("add button clicked on list " + id);
+      function listEditBtn(list){
+        vm.listToEdit = list;
+        showModal('shownEditListModal');
+      }
+      function listAddBtn(list){
+        vm.listToAddItem = list;
+        vm.itemListToCreate = {};
+        showModal('shownNewItemListModal');
       }
 
-      function listItemClick(id){
-        console.log("item clicked " + id);
+      function listItemClick(item, list){
+        vm.itemListToEdit = { item: item, list: list };
+        showModal('shownEditItemListModal');
       }
 
-      function listCheckClick(id){
-        console.log("checkbox clicked on item " + id);
+      function listCheckClick(item){
+        item.wasPurchased = !item.wasPurchased;
       }
+      function showModal(controlVar) { vm[controlVar] = true; }
+      function hideModal(controlVar) { vm[controlVar] = false; }
+
+
         // $scope.pageClass = 'page-home';
         // $scope.loadingMovies = true;
         // $scope.loadingGenres = true;

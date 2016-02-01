@@ -17,7 +17,6 @@ var routes = require('./routes/index');
 var usersRoutes = require('./routes/users');
 var shoppingListRoutes = require('./routes/shopping-list');
 var appRoutes = require('./routes/app');
-
 var app = express();
 
 // view engine setup

@@ -5,8 +5,8 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <h1>Shopping lists</h1>
+    <p>Welcome to shoppinglists</p>
     <% if (user){ %>
           <p>Hi, I am <%= user.username %></p>
           <a href="/logout">Logout</a>
@@ -14,5 +14,6 @@
     <% if (!user){ %>
           <a href="/register">Register</a> or <a href="/login">Login!</a>
     <% }%>
+    
   </body>
 </html>

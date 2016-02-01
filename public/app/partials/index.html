@@ -5,17 +5,89 @@
 
 <button type="button" ng-click="index.showListModal()" >Add list</button>
 
-<!-- render all lists -->
-<div ng-repeat="list in index.lists">
-  <list data="list" options="index.listOptions"></list>
+<div class="lists-content">
+  <!-- render all lists -->
+  <div ng-repeat="list in index.lists">
+    <list data="list" options="index.listOptions"></list>
+  </div>
 </div>
 
-
 <!-- modal dialog for add a new list -->
-<modal-dialog show='index.shownListModal' width='25%' height='30%'>
-  <form class="form-list" action="#" method="post">
+<modal-dialog show='index.shownNewListModal' width='300px' height='175px'>
+  <form name="newListForm" class="form-list" ng-submit="index.createList()" novalidate autocomplete="off" >
     <label for="title">List Title</label>
-    <input type="text" name="title" ng-model>
-    <button type="button" name="button">Create</button>
+    <input type="text" name="title" ng-model="index.listToCreate.title" required>
+    <label for="title">Choose a color</label>
+    <div class="color-select-container">
+      <color-select></color-select>
+    </div>
+    <button
+      type="submit"
+      ng-class=" newListForm.$valid ? 'blue' : 'gray' "
+      ng-disabled="newListForm.$invalid" >
+      Create
+    </button>
   </form>
+</modal-dialog>
+
+<!-- modal dialog for edit a list -->
+<modal-dialog show='index.shownEditListModal' width='300px' height='175px'>
+  <form name="editListForm" class="form-list" ng-submit="index.editList()" novalidate autocomplete="off">
+    <label for="title">List Title</label>
+    <input type="text" name="title" ng-model="index.listToEdit.title" required>
+    <button
+      type="submit"
+      ng-class=" editListForm.$valid ? 'blue' : 'gray' "
+      ng-disabled="editListForm.$invalid" >
+      Update
+    </button>
+    <span><i class="fa fa-trash-o delete" ng-click="index.showConfirmDeleteListModal()"></i></span>
+  </form>
+</modal-dialog>
+
+<!-- modal dialog for confirm to delete a list -->
+<modal-dialog show='index.shownConfirmDeleteListModal' width='300px' height='165px'>
+  <h3>Are you sure? </h3>
+  <p>You will delete the <strong>{{index.listToDelete.title}}</strong> list!</p>
+  <button class="red" ng-click="index.deleteList()"> Yes! </button>
+</modal-dialog>
+
+<!-- modal dialog for add a new item to a list -->
+<modal-dialog show='index.shownNewItemListModal' width='300px' height='340px'>
+  <form name="newItemListForm" class="form-list" ng-submit="index.createItemList()" novalidate autocomplete="off">
+    <label for="title">Item Title</label>
+    <input type="text" name="title" ng-model="index.itemListToCreate.title" required>
+    <label for="detail">Details</label>
+    <textarea name="detail"  ng-model="index.itemListToCreate.detail" rows="8" cols="40"></textarea>
+    <button
+      type="submit"
+      ng-class=" newItemListForm.$valid ? 'blue' : 'gray' "
+      ng-disabled="newItemListForm.$invalid" >
+      Create
+    </button>
+  </form>
+</modal-dialog>
+
+<!-- modal dialog for edit a item  -->
+<modal-dialog show='index.shownEditItemListModal' width='300px' height='340px'>
+  <form name="editItemListForm" class="form-list" ng-submit="index.editItemList()" novalidate autocomplete="off">
+    <label for="title">Item Title</label>
+    <input type="text" name="title" ng-model="index.itemListToEdit.item.title" required>
+    <label for="detail">Details</label>
+    <textarea name="detail"  ng-model="index.itemListToEdit.item.detail" rows="8" cols="40"></textarea>
+    <button
+      type="submit"
+      ng-class=" editItemListForm.$valid ? 'blue' : 'gray' "
+      ng-disabled="editItemListForm.$invalid" >
+      Update
+    </button>
+    <span><i class="fa fa-trash-o delete" ng-click="index.showConfirmDeleteItemListModal()"></i></span>
+  </form>
+</modal-dialog>
+
+<!-- modal dialog for confirm to delete an item list -->
+<modal-dialog show='index.shownConfirmDeleteItemListModal' width='300px' height='200px'>
+  <h3>Are you sure? </h3>
+  <p>You will delete the item <strong>{{index.itemListToDelete.item.title}}</strong> !</p>
+  <button class="red" ng-click="index.deleteItemList()"> Yes! </button>
 </modal-dialog>

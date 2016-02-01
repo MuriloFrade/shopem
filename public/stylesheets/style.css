@@ -4,9 +4,34 @@ body {
   color: #333;
 }
 
+
 a {
   color: #00B7FF;
 }
+
+button {
+  margin: 10px;
+  font-size: 1.2em;
+  display: inline-block;
+  height: 40px;
+  border: 0px;
+  border-radius: 5px;
+}
+button.gray{
+  background: #A4A4A4;
+}
+button.blue {
+  color: #fff;
+  background: #3498db;
+}
+button.red {
+  color: #fff;
+  background: #e74c3c;
+}
+button:hover{ opacity: 0.8; }
+button:active{ opacity: 0.6; }
+button:focus { outline: none; }
+
 
 /* form for a list */
 .form-list label{
@@ -14,7 +39,8 @@ a {
   font-size: 1.2em;
   display: block;
 }
-.form-list input{
+.form-list input, .form-list textarea{
+  display: block;
   margin: 10px;
   font-size: 1.2em;
   width: 91%;
@@ -24,22 +50,27 @@ a {
   border-radius: 5px;
   padding-left: 10px;
 }
-.form-list button{
-  margin: 10px;
-  font-size: 1.2em;
-  display: block;
-  color: #fff;
-  background: #3498db;
-  width: 50%;
-  height: 40px;
-  border: 0px;
-  border-radius: 5px;
+.form-list .color-select-container{
+  margin-right: 100px;
 }
-.form-list button:hover{
-  opacity: 0.8;
+.form-list textarea{
+  height: 100px;
+  resize: none;
+  padding-top: 10px;
 }
-.form-list button:active{
-  opacity: 0.6;
+.form-list input, .form-list textarea:focus{
+  outline: none;
 }
 
-/*# sourceMappingURL=style.css.map */
+.form-list button{
+  width: 50%;
+}
+.form-list .delete{
+  margin: 10px;
+  cursor: pointer;
+  float: right;
+  font-size: 2em;
+  padding-top: 5px;
+  color: #e74c3c;
+}
+.form-list .delete:hover{ opacity: 0.8; }

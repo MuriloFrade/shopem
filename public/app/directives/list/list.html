@@ -1,13 +1,13 @@
 <div class="list">
   <div class="header">
-      <h1>{{data.title}}<i class="fa fa-pencil"></i></h1>
+      <h1>{{data.title}}<i class="fa fa-pencil" ng-click="options.editList(data)"></i></h1>
   </div>
 
   <div class="items-list">
     <div ng-repeat="item in data.items">
-      <div class="item" ng-click="options.itemClick(item._id)">
+      <div class="item" ng-click="options.itemClick(item, data)">
         <span class="ckeckbox">
-          <i class="fa fa-2x" ng-click="options.checkClick(item._id);$event.stopPropagation()" ng-class=" item.wasPurchased ? 'fa-check-square-o' : 'fa-square-o' "></i>
+          <i class="fa fa-2x" ng-click="options.checkClick(item);$event.stopPropagation()" ng-class=" item.wasPurchased ? 'fa-check-square-o' : 'fa-square-o' "></i>
         </span>
         <h3>{{item.title}}</h3>
         <span class="details" ng-show="item.detail">
@@ -16,8 +16,10 @@
       </div>
     </div>
 
-    <div class="add-item">
-      <span class="ckeckbox"><i class="fa fa-plus-circle fa-3x" ng-click="options.addItem(data._id)"></i></span>
-    </div>
+
   </div>   <!--end div items-list -->
+  <div class="add-item">
+    <span class="ckeckbox"><i class="fa fa-plus-circle fa-3x" ng-click="options.addItem(data)"></i></span>
+  </div>
+   <!-- end div.list -->
 </div>
