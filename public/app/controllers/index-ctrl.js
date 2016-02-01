@@ -3,7 +3,7 @@
 
     app.controller('IndexCtrl', indexCtrl);
 
-    indexCtrl.$inject = ['$scope'];
+    indexCtrl.$inject = ['$scope', 'ShoppingListSvc'];
 
     var shoppingLists = [
       {
@@ -70,15 +70,20 @@
         sharedWith: []
       }
     ];
-    function indexCtrl($scope) {
+    function indexCtrl($scope, ShoppingListSvc) {
+      ShoppingListSvc.getAll(function(err, result){
+        console.log(err);
+        console.log(result);
+      });
       // View Model !
       var vm = this; // jshint ignore:line
       // lists to render the lists directives
       vm.lists = shoppingLists;
-      vm.listColors = ['#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e',
-            '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f',
-            '#e67e22', '#e74c3c', '#DB0A5B', '#95a5a6', '#f39c12', '#d35400',
-            '#c0392b', '#bdc3c7', '#7f8c8d'];
+      vm.listColors =
+        ['#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e',
+        '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f',
+        '#e67e22', '#e74c3c', '#DB0A5B', '#95a5a6', '#f39c12', '#d35400',
+        '#c0392b', '#bdc3c7', '#7f8c8d'];
 
       // called when the user clicks on button to create a new list
       vm.showListModal = function(){
@@ -86,6 +91,10 @@
       };
       // called when the form for create a list is submmited
       vm.createList = function(){
+        ShoppingListSvc.create({title : 'Titulo'}, function(e, shoppingList){
+          console.log(e);
+          console.log(shoppingList);
+        });
         // JUST FOR TESTS!
           vm.listToCreate._id = vm.listToCreate.title;
           vm.listToCreate.items = [];

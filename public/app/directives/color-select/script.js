@@ -14,14 +14,9 @@
         options: '=',
       },
       link: function (scope, element, attrs) {
-        //var visibility = 'hidden';
         scope.itemClick = function (val){
           scope.data = val;
           scope.visibility = 'hidden';
-        };
-
-        scope.onMouseOver = function (){
-
         };
       }
     };

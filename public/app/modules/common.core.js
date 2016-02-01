@@ -1,6 +1,6 @@
 (function () {
     'use strict';
 
-    angular.module('common.core', ['ngRoute']);
+    angular.module('common.core', ['ngRoute', 'ngResource']);
 
 })();

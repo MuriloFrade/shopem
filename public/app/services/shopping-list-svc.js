@@ -1,11 +1,38 @@
 (function (app) {
     'use strict';
 
-    app.factory('apiService', apiService);
+    app.factory('ShoppingListSvc', shoppingListSvc);
+    shoppingListSvc.$inject = ['$http', '$resource'];
+    function shoppingListSvc($http, $resource) {
+      var service = {
+        getAll : getAll,
+        create : create
+      };
 
-    apiService.$inject = ['$http', '$location', 'NotificationService','$rootScope'];
+      var ShoppingList = $resource(
+        '/shoppinglists/:id', null, { 'update': { method:'PUT' } }
+      );
 
-    function apiService($http, $location, notificationService, $rootScope) {
+      function getAll(cb){
+        ShoppingList.query().$promise.then(function(shoppingLists) {
+           // success
+           cb(null, shoppingLists);
+        }, function(errResponse) {
+           cb(errResponse);
+        });
+      }
+
+      function create(obj, cb){
+        var newShoppingList = new ShoppingList(obj);
+        newShoppingList.$save().then(function(shoppingList) {
+           // success
+           cb(null, shoppingList);
+        }, function(errResponse) {
+           cb(errResponse);
+        });
+      }
+      return service;
+
         // var service = {
         //     get: get,
         //     post: post
