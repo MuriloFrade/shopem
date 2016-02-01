@@ -51,6 +51,7 @@ button:focus { outline: none; }
   padding-left: 10px;
 }
 .form-list .color-select-container{
+  margin: 10px;
   margin-right: 100px;
 }
 .form-list textarea{

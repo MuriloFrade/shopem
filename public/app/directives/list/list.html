@@ -1,5 +1,5 @@
-<div class="list">
-  <div class="header">
+<div class="list" >
+  <div class="header" ng-style=" { 'background-color' : color } ">
       <h1>{{data.title}}<i class="fa fa-pencil" ng-click="options.editList(data)"></i></h1>
   </div>
 
@@ -18,8 +18,12 @@
 
 
   </div>   <!--end div items-list -->
-  <div class="add-item">
-    <span class="ckeckbox"><i class="fa fa-plus-circle fa-3x" ng-click="options.addItem(data)"></i></span>
+  <div class="add-item" >
+    <span class="ckeckbox">
+      <i class="fa fa-plus-circle fa-3x"
+        ng-click="options.addItem(data)"
+        ng-style=" { 'color' : color } "></i>
+    </span>
   </div>
    <!-- end div.list -->
 </div>

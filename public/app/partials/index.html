@@ -4,22 +4,20 @@
   </ul> -->
 
 <button type="button" ng-click="index.showListModal()" >Add list</button>
-
 <div class="lists-content">
   <!-- render all lists -->
   <div ng-repeat="list in index.lists">
-    <list data="list" options="index.listOptions"></list>
+    <list data="list" color="list.color" options="index.listOptions"></list>
   </div>
 </div>
-
 <!-- modal dialog for add a new list -->
-<modal-dialog show='index.shownNewListModal' width='300px' height='175px'>
+<modal-dialog show='index.shownNewListModal' width='300px' height='270px'>
   <form name="newListForm" class="form-list" ng-submit="index.createList()" novalidate autocomplete="off" >
     <label for="title">List Title</label>
     <input type="text" name="title" ng-model="index.listToCreate.title" required>
     <label for="title">Choose a color</label>
     <div class="color-select-container">
-      <color-select></color-select>
+      <color-select data="index.listToCreate.color" colors="index.listColors"></color-select>
     </div>
     <button
       type="submit"
@@ -31,10 +29,14 @@
 </modal-dialog>
 
 <!-- modal dialog for edit a list -->
-<modal-dialog show='index.shownEditListModal' width='300px' height='175px'>
+<modal-dialog show='index.shownEditListModal' width='300px' height='270px'>
   <form name="editListForm" class="form-list" ng-submit="index.editList()" novalidate autocomplete="off">
     <label for="title">List Title</label>
     <input type="text" name="title" ng-model="index.listToEdit.title" required>
+    <label for="title">Choose a color</label>
+    <div class="color-select-container">
+      <color-select data="index.listToEdit.color" colors="index.listColors"></color-select>
+    </div>
     <button
       type="submit"
       ng-class=" editListForm.$valid ? 'blue' : 'gray' "

@@ -2,40 +2,43 @@
   position: relative;
   display: inline-block;
 }
-.color-select .color-selected{
-  background-color: #1abc9c;
+.color-select .color-selected{  
   height: 50px;
   width: 50px;
+  border: 1px solid #AAA;;
   border-radius: 2px;
+  cursor: pointer;
 }
 .color-select .colors-list{
   position: absolute;
   margin: 5px;
+  padding: 2px;
   top: 0;
-  width: 132px; /* 33 * 4  (+ 2 da borda no mouse over) */
+  left: 50px;
+  width: 128px; /* 32(tamanho do item mais borda) * 4  */
   height: auto;
   border: 1px solid #BDBDBD;
   border-radius: 3px;
   background: #fff;
-  padding: 2px;  
-  visibility: hidden;
   text-align: left;
 }
 .color-select:hover .colors-list{
-  visibility: visible;
+
 }
 .color-select .colors-list .color-item{
   display: inline-block;
-  background-color: #1abc9c;
+  float: left;
   height: 30px;
   width: 30px;
   border-radius: 2px;
-  margin: 0px;
+  margin-bottom: -4px;
+  margin: 1px;
   box-sizing: border-box; /* css3 rec */
  -moz-box-sizing: border-box; /* ff2 */
  -ms-box-sizing: border-box; /* ie8 */
  -webkit-box-sizing: border-box; /* safari3 */
 }
 .color-select .colors-list .color-item:hover{
-  border: 1px solid #333;
+  cursor: pointer;
+  border: 1px solid #555;
 }

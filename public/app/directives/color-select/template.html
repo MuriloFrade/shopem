@@ -1,10 +1,13 @@
 
     <div class="color-select">
-      <input class="color-selected" type="text" name="color-selected" >
-      <div class="colors-list">
-        <div class="color-item"></div>
-        <div class="color-item"></div>
-        <div class="color-item"></div>
-        <div class="color-item"></div>
+      <input type="hidden" name="color-selected" ng-model="data">
+      <div class="color-selected"
+        ng-style=" { 'background-color' : data } "
+        ng-init="visibility='hidden'"
+        ng-click="visibility == 'visible' ? visibility = 'hidden' : visibility = 'visible'"></div>
+      <div class="colors-list" ng-style=" { 'visibility' : visibility } " ng-mouseleave="visibility='hidden'">
+        <div  ng-repeat="color in colors" class="color-item"
+              ng-style=" { 'background-color' : color } "
+              ng-click="itemClick(color)"></div>
       </div>
     </div>

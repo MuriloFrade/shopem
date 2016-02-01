@@ -10,7 +10,8 @@
       templateUrl: '/app/directives/list/list.html',
       scope: {
         data: '=',
-        options: '='
+        options: '=',
+        color: '='
       }
     };
   }
