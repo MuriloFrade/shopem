@@ -1,36 +1,4 @@
 /* jshint esnext: true*/
-
-// fake data:
-// var shoppingLists = [
-//   {
-//     title: 'Supermarket',
-//     itens: [
-//       {
-//         title: '12 oranges',
-//         detail: 'Should prefer buy oranges from Brazil',
-//         wasPurchased: false,
-//       },
-//       {
-//         title: '1 brown bread',
-//         detail: '',
-//         wasPurchased: false,
-//       },
-//       {
-//         title: '2 Axe Deodorants',
-//         detail: 'Should prefer aerosol types',
-//         wasPurchased: false,
-//       },
-//       {
-//         title: '12 oranges',
-//         detail: 'Should prefer buy oranges from Brazil',
-//         wasPurchased: false,
-//       },
-//     ],
-//     ownerId: '123123',
-//     sharedWith: []
-//   }
-// ];
-
 var ShoppingList = require('../models/shopping-list');
 
 function ShoppingListDbError(message) {
@@ -88,7 +56,7 @@ function addItem (shoppingListId, item, callback){
   get(shoppingListId, function(err, shoppingList){
     if(err) callback(err, null);
 
-    shoppingList.itens.push(item);
+    shoppingList.items.push(item);
     update(shoppingList._id, shoppingList, function(err, result){
       if(err) callback(err, null);
       callback(null, result);
@@ -101,11 +69,11 @@ function updateItem (shoppingListId, itemId, item, callback){
   get(shoppingListId, function(err, shoppingList){
     if(err) callback(err, null);
 
-    var itemIdex = shoppingList.itens.findIndex(e => e._id.equals(itemId));
+    var itemIdex = shoppingList.items.findIndex(e => e._id.equals(itemId));
     if(itemIdex === -1)
       throw new ShoppingListDbError('item not found in collection of items of shoppinglist');
 
-    shoppingList.itens[itemIdex] = item;
+    shoppingList.items[itemIdex] = item;
     update(shoppingList._id, shoppingList, function(err, result){
       if(err) callback(err, null);
       callback(null, result);
@@ -117,7 +85,7 @@ function removeItem (shoppingListId, itemId, callback){
   get(shoppingListId, function(err, shoppingList){
     if(err) callback(err, null);
 
-    var itemIdex = shoppingList.itens.findIndex(function (e) {
+    var itemIdex = shoppingList.items.findIndex(function (e) {
       if(e._id.equals(itemId)){
         return true;
       }
@@ -125,7 +93,7 @@ function removeItem (shoppingListId, itemId, callback){
     if(itemIdex === -1)
       throw new ShoppingListDbError('item not found in collection of items of shoppinglist');
 
-    shoppingList.itens.splice(itemIdex,1);
+    shoppingList.items.splice(itemIdex,1);
     update(shoppingList._id, shoppingList, function(err, result){
       if(err) callback(err, null);
       callback(null, result);

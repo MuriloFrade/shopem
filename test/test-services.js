@@ -116,7 +116,8 @@ describe('services tests', function (){
       it('should return a new shoppingList without erros', function (done) {
         var sl = {
           title: 'titleTest',
-          itens: [],
+          color: '#FFFFFF',
+          items: [],
           _ownerId: userTest._id,
           _sharedWith: []
         };
@@ -169,7 +170,7 @@ describe('services tests', function (){
         };
         ShoppingListDbService.addItem(currentShoppingList._id, item, function(err, shoppingList){
           should.equal(err, null);
-          should.equal(item.title, shoppingList.itens[0].title);
+          should.equal(item.title, shoppingList.items[0].title);
           currentShoppingList = shoppingList;
           done();
         });
@@ -178,11 +179,11 @@ describe('services tests', function (){
 
     describe('#updateItem', function () {
       it('should update an item of the shoppingList', function (done) {
-        var item = currentShoppingList.itens[0];
+        var item = currentShoppingList.items[0];
         item.title = '10 apples';
         ShoppingListDbService.updateItem(currentShoppingList._id, item._id, item, function(err, shoppingList){
           should.equal(err, null);
-          should.equal(item.title, shoppingList.itens[0].title);
+          should.equal(item.title, shoppingList.items[0].title);
           done();
         });
       });
@@ -190,10 +191,10 @@ describe('services tests', function (){
 
     describe('#removeItem', function () {
       it('should remove an item from shoppingList', function (done) {
-        var item = currentShoppingList.itens[0];
+        var item = currentShoppingList.items[0];
         ShoppingListDbService.removeItem(currentShoppingList._id, item._id, function(err, shoppingList){
           should.equal(err, null);
-          var itemIdex = shoppingList.itens.findIndex(function (e) {
+          var itemIdex = shoppingList.items.findIndex(function (e) {
             if(e._id.equals(item._id)){
               return true;
             }

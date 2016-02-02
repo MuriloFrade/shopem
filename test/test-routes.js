@@ -174,7 +174,8 @@ describe('routes tests', function () {
     describe('POST /shoppinglists', function(){
       it('return 201 STATUSCODE and a shopping list object', function(done){
         var sl = {
-          title: 'titleTest'
+          title: 'titleTest',
+          color: '#FFFFFF'
         };
         request
           .post('/shoppinglists')
@@ -207,7 +208,7 @@ describe('routes tests', function () {
       it('return 200 STATUSCODE and the object modified', function(done){
         var sl = {
           title: 'titleTest Modified',
-          itens: [{
+          items: [{
             title: '1 brown bread',
             detail: 'yay!',
             wasPurchased: false,
@@ -222,18 +223,18 @@ describe('routes tests', function () {
             should.equal(err, null);
             should.equal(res.body._id, shoppingListTest._id);
             should.equal(res.body.title, 'titleTest Modified');
-            should.equal(res.body.itens.length, 1);
+            should.equal(res.body.items.length, 1);
             done();
           });
       });
     });
 
-    /**************  ROUTES SHOPPINGLISTS ITENS   ****************/
+    /**************  ROUTES SHOPPINGLISTS items   ****************/
 
-    describe('GET /shoppinglists/:id/itens', function(){
+    describe('GET /shoppinglists/:id/items', function(){
       it('respond with 200 status code and a list with one item', function(done){
         request
-          .get('/shoppinglists/' + shoppingListTest._id + '/itens')
+          .get('/shoppinglists/' + shoppingListTest._id + '/items')
           .expect(200)
           .expect('Content-Type', /json/)
           .end(function (err, res){
@@ -244,7 +245,7 @@ describe('routes tests', function () {
       });
     });
 
-    describe('POST /shoppinglists/:id/itens', function(){
+    describe('POST /shoppinglists/:id/items', function(){
       it('return 201 STATUSCODE and a shopping list object', function(done){
         var item = {
           title: '12 oranges',
@@ -252,24 +253,24 @@ describe('routes tests', function () {
           wasPurchased: false,
         };
         request
-          .post('/shoppinglists/' + shoppingListTest._id + '/itens')
+          .post('/shoppinglists/' + shoppingListTest._id + '/items')
           .send(item)
           .expect(201)
           .expect('Content-Type', /json/)
           .end(function (err, res){
             should.equal(err, null);
-            should.equal(res.body.itens.length, 2);
+            should.equal(res.body.items.length, 2);
             shoppingListTest = res.body;
-            shoppingListItemTest = res.body.itens.find(e => e.title == '12 oranges');
+            shoppingListItemTest = res.body.items.find(e => e.title == '12 oranges');
             done();
           });
       });
     });
 
-    describe('GET /shoppinglists/:id/itens/:itemId', function(){
+    describe('GET /shoppinglists/:id/items/:itemId', function(){
       it('respond with 200 status code and an item from a shoppinglist', function(done){
         request
-          .get('/shoppinglists/' + shoppingListTest._id + '/itens/' + shoppingListItemTest._id)
+          .get('/shoppinglists/' + shoppingListTest._id + '/items/' + shoppingListItemTest._id)
           .expect(200)
           .expect('Content-Type', /json/)
           .end(function (err, res){
@@ -280,17 +281,17 @@ describe('routes tests', function () {
       });
     });
 
-    describe('PUT /shoppinglists/:id/itens/:itemId', function(){
+    describe('PUT /shoppinglists/:id/items/:itemId', function(){
       it('respond with 200 status code and an shoppinglist updated', function(done){
         shoppingListItemTest.title = '1 orange';
         request
-          .put('/shoppinglists/' + shoppingListTest._id + '/itens/' + shoppingListItemTest._id)
+          .put('/shoppinglists/' + shoppingListTest._id + '/items/' + shoppingListItemTest._id)
           .send(shoppingListItemTest)
           .expect(200)
           .expect('Content-Type', /json/)
           .end(function (err, res){
             should.equal(err, null);
-            var itemUpdated = res.body.itens.find(e => e._id === shoppingListItemTest._id );
+            var itemUpdated = res.body.items.find(e => e._id === shoppingListItemTest._id );
             should.equal(shoppingListItemTest.title, itemUpdated.title);
             shoppingListItemTest = itemUpdated;
             done();
@@ -298,14 +299,14 @@ describe('routes tests', function () {
       });
     });
 
-    describe('DELETE /shoppinglists/:id/itens/:itemId', function(){
+    describe('DELETE /shoppinglists/:id/items/:itemId', function(){
       it('respond with 200 status code and a shoppinglist updated without the old item', function(done){
         request
-          .delete('/shoppinglists/' + shoppingListTest._id + '/itens/' + shoppingListItemTest._id)
+          .delete('/shoppinglists/' + shoppingListTest._id + '/items/' + shoppingListItemTest._id)
           .expect(200)
           .end(function (err, res){
             should.equal(err, null);
-            var itemUpdated = res.body.itens.find(e => e._id === shoppingListItemTest._id );
+            var itemUpdated = res.body.items.find(e => e._id === shoppingListItemTest._id );
             should.equal(null, itemUpdated);
             done();
           });
@@ -318,7 +319,7 @@ describe('routes tests', function () {
         it('respond with a page', function(done){
           request
             .get('/app')
-            .expect('Content-Type', /text\/html/, done);            
+            .expect('Content-Type', /text\/html/, done);
         });
       });
     });

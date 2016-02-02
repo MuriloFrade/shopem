@@ -25,7 +25,7 @@ function getShoppingListFromUser(req, res, callback){
     // if the route has an id for an item of shopping list, get the item from it
     if(req.params.itemId){
       var itemId = req.params.itemId;
-      var item = shoppingList.itens.find(e => e._id.equals(itemId));
+      var item = shoppingList.items.find(e => e._id.equals(itemId));
       if(!item){
         error = true;
         res.status(403);
@@ -37,7 +37,6 @@ function getShoppingListFromUser(req, res, callback){
   });
 }
 
-/* GET users listing. */
 router.get('/', function(req, res, next) {
   var user = req.user;
   Service.getAllFromUser(user._id, function (err, results){
@@ -55,6 +54,7 @@ router.post('/', function(req, res){
   try {
     shoppingList = {
       title: req.body.title,
+      color: req.body.color,
       _ownerId: req.user._id
     };
     utils.checkProperties(shoppingList);
@@ -81,6 +81,7 @@ router.put('/:id', function (req, res){
   getShoppingListFromUser(req, res, function(err, shoppinglist){
     if(err)
       return res.send();
+
     Service.update(req.params.id, req.body, function(err, shoppinglist){
       if(err)
         return res.sendStatus(500);
@@ -100,24 +101,24 @@ router.delete('/:id', function (req, res){
   });
 });
 
-// ====== itens of shopping list ======
+// ====== items of shopping list ======
 
-// get all itens from a shopping list
-router.get('/:id/itens', function (req, res){
+// get all items from a shopping list
+router.get('/:id/items', function (req, res){
   getShoppingListFromUser(req, res, function(err, shoppinglist){
     if(err) return res.send();
 
-    res.status(200).json(shoppinglist.itens);
+    res.status(200).json(shoppinglist.items);
   });
 });
 
-router.post('/:id/itens', function(req, res){
+router.post('/:id/items', function(req, res){
   var item = null;
   try {
     item = {
       title: req.body.title,
-      detail: req.body.detail,
-      wasPurchased: req.body.wasPurchased
+      detail: req.body.detail || '',
+      wasPurchased: false
     };
     utils.checkProperties(item);
   } catch (e) {
@@ -134,7 +135,7 @@ router.post('/:id/itens', function(req, res){
 });
 
 // // get an item
-router.get('/:id/itens/:itemId', function(req, res){
+router.get('/:id/items/:itemId', function(req, res){
   getShoppingListFromUser(req, res, function(err, shoppinglist, item){
     if(err) return res.send();
     res.status(200).json(item);
@@ -143,7 +144,7 @@ router.get('/:id/itens/:itemId', function(req, res){
 });
 
 // update a shoppinglist's item
-router.put('/:id/itens/:itemId', function (req, res) {
+router.put('/:id/items/:itemId', function (req, res) {
   getShoppingListFromUser(req, res, function(err, shoppinglist, item){
     if(err) return res.send();
     try {
@@ -165,7 +166,7 @@ router.put('/:id/itens/:itemId', function (req, res) {
 });
 
 // // remove an item
-router.delete('/:id/itens/:itemId', function(req, res){
+router.delete('/:id/items/:itemId', function(req, res){
   getShoppingListFromUser(req, res, function(err, shoppinglist, item){
     if(err) return res.send();
     Service.removeItem(shoppinglist._id, item._id, function(err, shoppingList){

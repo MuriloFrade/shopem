@@ -5,80 +5,11 @@
 
     indexCtrl.$inject = ['$scope', 'ShoppingListSvc'];
 
-    var shoppingLists = [
-      {
-        _id: '13131312312',
-        title: 'Supermarket',
-        color: '#3498db',
-        items: [
-          {
-            _id: '131aaa312312',
-            title: '12 oranges',
-            detail: 'Should prefer buy oranges from Brazil',
-            wasPurchased: true,
-          },
-          {
-            _id: '13131312312zzzz',
-            title: '1 brown bread',
-            wasPurchased: false,
-          },
-          {
-            _id: '13131rttrr312312',
-            title: '2 Axe Deodorants',
-            detail: 'Should prefer aerosol types',
-            wasPurchased: false,
-          },
-          {
-            _id: '131trewtrwe31312312',
-            title: '12 oranges',
-            wasPurchased: true,
-          },
-        ],
-        ownerId: '123123',
-        sharedWith: []
-      },
-      {
-        _id: '13asdadsa2312',
-        title: 'Ebay',
-        color: '#e74c3c',
-        items: [
-          {
-            _id: '131313qqqqq12312',
-            title: '1 oranges',
-            detail: 'Should prefer buy oranges from Brazil',
-            wasPurchased: false,
-          },
-          {
-            _id: '13tes131312312',
-            title: '19 brown bread',
-            wasPurchased: true,
-          },
-          {
-            _id: '1313134325312312',
-            title: '29 Axe Deodorants',
-            detail: 'Should prefer aerosol types',
-            wasPurchased: false,
-          },
-          {
-            _id: '1313131sfsd2312',
-            title: '102 oranges',
-            detail: 'Should prefer buy oranges from Brazil',
-            wasPurchased: false,
-          },
-        ],
-        ownerId: '123123',
-        sharedWith: []
-      }
-    ];
     function indexCtrl($scope, ShoppingListSvc) {
-      ShoppingListSvc.getAll(function(err, result){
-        console.log(err);
-        console.log(result);
-      });
       // View Model !
       var vm = this; // jshint ignore:line
       // lists to render the lists directives
-      vm.lists = shoppingLists;
+      vm.lists = [];
       vm.listColors =
         ['#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e',
         '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f',
@@ -91,22 +22,29 @@
       };
       // called when the form for create a list is submmited
       vm.createList = function(){
-        ShoppingListSvc.create({title : 'Titulo'}, function(e, shoppingList){
-          console.log(e);
-          console.log(shoppingList);
+        if(!vm.listToCreate.color) vm.listToCreate.color = vm.listColors[0];
+        ShoppingListSvc.create(vm.listToCreate, function(e, shoppingList){
+          if(e){
+            console.log(e);
+            return;
+          }
+          vm.lists.push(shoppingList);
+          vm.listToCreate = {};
+          hideModal('shownNewListModal');
         });
-        // JUST FOR TESTS!
-          vm.listToCreate._id = vm.listToCreate.title;
-          vm.listToCreate.items = [];
-        // --------------------------!!!!!!!!!!!!!!!
-        vm.lists.push(vm.listToCreate);
-        vm.listToCreate = {};
-        hideModal('shownNewListModal');
       };
       // called when the form for edit a list is submmited
       vm.editList = function(){
-        vm.listToEdit = {};
-        hideModal('shownEditListModal');
+        ShoppingListSvc.update(vm.listToEdit, function(e, shoppingList){
+          if(e){
+            console.log(e);
+            return;
+          }
+          vm.lists[getListIndexById(shoppingList._id)] = shoppingList;
+          vm.listToEdit = {};
+          hideModal('shownEditListModal');
+        });
+
       };
       // called when the user clicks on the trash icon inside the edit modal
       vm.showConfirmDeleteListModal = function(){
@@ -116,27 +54,39 @@
       };
       // function called when the user clicks on button "Yes!" to confirm to delete a list
       vm.deleteList = function(){
-        var itemIdex = vm.lists.findIndex(function (e) {
-          if(e._id == vm.listToDelete._id){
-            return true;
+        var listDeletedId = vm.listToDelete._id;
+        ShoppingListSvc.remove(vm.listToDelete, function(e){
+          if(e){
+            console.log(e);
+            return;
           }
+          var itemIdex = getListIndexById(listDeletedId);
+          vm.lists.splice(itemIdex, 1);
+          vm.listToDelete = {};
+          hideModal('shownConfirmDeleteListModal');
         });
-        vm.lists.splice(itemIdex, 1);
-        vm.listToDelete = {};
-        hideModal('shownConfirmDeleteListModal');
       };
       // called when the form for create an item list is submmited
       vm.createItemList = function(){
-        // JUST FOR TESTS!
-        vm.itemListToCreate._id = vm.itemListToCreate.title;
-        // --------------------------!!!!!!!!!!!!!!!
-
-        vm.listToAddItem.items.push(vm.itemListToCreate);
-        hideModal('shownNewItemListModal');
+        ShoppingListSvc.createItem(vm.listToAddItem, vm.itemListToCreate, function(e, shoppingList){
+          if(e){
+            console.log(e);
+            return;
+          }
+          vm.lists[getListIndexById(vm.listToAddItem)] = shoppingList;
+          hideModal('shownNewItemListModal');
+        });
       };
       // called whe the form for edit an item list is submmited
       vm.editItemList = function(){
-        hideModal('shownEditItemListModal');
+        ShoppingListSvc.updateItem(vm.itemListToEdit.list, vm.itemListToEdit.item, function(e, shoppingList){
+          if(e){
+            console.log(e);
+            return;
+          }
+          vm.lists[getListIndexById(vm.itemListToEdit.list._id)] = shoppingList;
+          hideModal('shownEditItemListModal');
+        });
       };
       // called when the user clicks on the trash icon inside the edit modal
       vm.showConfirmDeleteItemListModal = function(){
@@ -146,13 +96,20 @@
       };
       // function called when the user clicks on button "Yes!" to confirm to delete an item list
       vm.deleteItemList = function(){
-        var itemIdex = vm.itemListToDelete.list.items.findIndex(function (e) {
-          if(e._id == vm.itemListToDelete.item._id){
-            return true;
+        var listItemDeletedId = vm.itemListToDelete.item._id;
+        ShoppingListSvc.removeItem(vm.itemListToDelete.list, vm.itemListToDelete.item, function(e, shoppingList){
+          if(e){
+            console.log(e);
+            return;
           }
+          var itemIdex = vm.itemListToDelete.list.items.findIndex(function (e) {
+            if(e._id == listItemDeletedId){
+              return true;
+            }
+          });
+          vm.itemListToDelete.list.items.splice(itemIdex, 1);
+          hideModal('shownConfirmDeleteItemListModal');
         });
-        vm.itemListToDelete.list.items.splice(itemIdex, 1);
-        hideModal('shownConfirmDeleteItemListModal');
       };
 
       // options used in list directive
@@ -164,7 +121,7 @@
       };
 
       function listEditBtn(list){
-        vm.listToEdit = list;
+        vm.listToEdit = angular.copy(list);
         showModal('shownEditListModal');
       }
       function listAddBtn(list){
@@ -183,57 +140,19 @@
       }
       function showModal(controlVar) { vm[controlVar] = true; }
       function hideModal(controlVar) { vm[controlVar] = false; }
-
-
-        // $scope.pageClass = 'page-home';
-        // $scope.loadingMovies = true;
-        // $scope.loadingGenres = true;
-        // $scope.isReadOnly = true;
-        //
-        // $scope.latestMovies = [];
-        // $scope.loadData = loadData;
-        //
-        // function loadData() {
-        //     apiService.get('/api/movies/latest', null,
-        //                 moviesLoadCompleted,
-        //                 moviesLoadFailed);
-        //
-        //     apiService.get("/api/genres/", null,
-        //         genresLoadCompleted,
-        //         genresLoadFailed);
-        // }
-        //
-        // function moviesLoadCompleted(result) {
-        //     $scope.latestMovies = result.data;
-        //     $scope.loadingMovies = false;
-        // }
-        //
-        // function genresLoadFailed(response) {
-        //     notificationService.displayError(response.data);
-        // }
-        //
-        // function moviesLoadFailed(response) {
-        //     notificationService.displayError(response.data);
-        // }
-        //
-        // function genresLoadCompleted(result) {
-        //     var genres = result.data;
-        //     Morris.Bar({
-        //         element: "genres-bar",
-        //         data: genres,
-        //         xkey: "Name",
-        //         ykeys: ["NumberOfMovies"],
-        //         labels: ["Number Of Movies"],
-        //         barRatio: 0.4,
-        //         xLabelAngle: 55,
-        //         hideHover: "auto",
-        //         resize: 'true'
-        //     });
-        //
-        //     $scope.loadingGenres = false;
-        // }
-        //
-        // loadData();
+      function getListIndexById(id){
+        return vm.lists.findIndex(function (e) {
+          if(e._id == id){
+            return true;
+          }
+        });
+      }
+      function init(){
+        ShoppingListSvc.getAll(function(err, result){
+          vm.lists = result;
+        });
+      }
+      init();
     }
 
 })(angular.module('ShoppingListApp'));

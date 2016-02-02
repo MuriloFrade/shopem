@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ShoppingListSchema = new Schema({
   title: String,
-  itens: [{
+  color: String,
+  items: [{
     title: String,
     detail: String,
     wasPurchased: Boolean,
