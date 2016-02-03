@@ -168,10 +168,10 @@ describe('services tests', function (){
           detail: 'Should prefer buy oranges from Brazil',
           wasPurchased: false,
         };
-        ShoppingListDbService.addItem(currentShoppingList._id, item, function(err, shoppingList){
+        ShoppingListDbService.addItem(currentShoppingList._id, item, function(err, item){
           should.equal(err, null);
-          should.equal(item.title, shoppingList.items[0].title);
-          currentShoppingList = shoppingList;
+          should.equal(item.title, item.title);
+          currentShoppingList.items.push(item);
           done();
         });
       });
@@ -181,9 +181,9 @@ describe('services tests', function (){
       it('should update an item of the shoppingList', function (done) {
         var item = currentShoppingList.items[0];
         item.title = '10 apples';
-        ShoppingListDbService.updateItem(currentShoppingList._id, item._id, item, function(err, shoppingList){
+        ShoppingListDbService.updateItem(currentShoppingList._id, item._id, item, function(err, itemUpdated){          
           should.equal(err, null);
-          should.equal(item.title, shoppingList.items[0].title);
+          should.equal(item.title, itemUpdated.title);
           done();
         });
       });

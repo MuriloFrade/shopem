@@ -18,13 +18,21 @@
         '/shoppinglists/:id', null, { 'update': { method:'PUT' } }
       );
       var ShoppingListItem = $resource(
-        '/shoppinglists/:id/items:itemId', null, { 'update': { method:'PUT' } }
+        '/shoppinglists/:id/items/:itemId', null, { 'update': { method:'PUT' } }
       );
 
       function getAll(cb){
         ShoppingList.query().$promise.then(function(shoppingLists) {
            // success
-           cb(null, shoppingLists);
+           // create resource objects for the items of shoppinglists
+           var shoppingListsFix = shoppingLists.map(function (list){
+             var newItems = list.items.map(function(item){
+               return new ShoppingListItem(item);
+             });
+             list.items = newItems;
+             return list;
+           });
+           cb(null, shoppingListsFix);
         }, function(errResponse) {
            cb(errResponse);
         });
@@ -58,16 +66,16 @@
 
       function createItem(list, obj, cb){
         var newItem = new ShoppingListItem(obj);
-        newItem.$save( { id : list._id } ).then(function(shoppingList) {
+        newItem.$save( { id : list._id } ).then(function(itemCreated) {
            // success
-           cb(null, shoppingList);
+           cb(null, itemCreated);
         }, function(errResponse) {
            cb(errResponse);
         });
       }
-      function updateItem(list, resource, cb){
-        resource.$update( { id : list._id, itemId : resource._id }, function(shoppingList) {
-           cb(null, shoppingList);
+      function updateItem(list, item, cb){
+        item.$update( { id : list._id, itemId : item._id }, function(itemUpdated) {
+           cb(null, itemUpdated);
         }, function(errResponse) {
            cb(errResponse);
         });

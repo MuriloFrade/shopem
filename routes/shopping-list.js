@@ -127,9 +127,9 @@ router.post('/:id/items', function(req, res){
   getShoppingListFromUser(req, res, function(err, shoppinglist){
     if(err) return res.send();
 
-    Service.addItem(shoppinglist._id, item, function(err, shoppinglist){
+    Service.addItem(shoppinglist._id, item, function(err, itemAdded){
       if(err) return res.sendStatus(500);
-      res.status(201).json(shoppinglist);
+      res.status(201).json(itemAdded);
     });
   });
 });
@@ -156,11 +156,11 @@ router.put('/:id/items/:itemId', function (req, res) {
     item.detail = req.body.detail;
     item.wasPurchased = req.body.wasPurchased;
 
-    Service.updateItem(shoppinglist._id, item._id, item, function(err, shoppingList){
+    Service.updateItem(shoppinglist._id, item._id, item, function(err, itemUpdated){
       if(err)
         return res.sendStatus(500);
 
-      res.status(200).json(shoppinglist);
+      res.status(200).json(itemUpdated);
     });
   });
 });
@@ -169,10 +169,10 @@ router.put('/:id/items/:itemId', function (req, res) {
 router.delete('/:id/items/:itemId', function(req, res){
   getShoppingListFromUser(req, res, function(err, shoppinglist, item){
     if(err) return res.send();
-    Service.removeItem(shoppinglist._id, item._id, function(err, shoppingList){
+    Service.removeItem(shoppinglist._id, item._id, function(err, shoppingListUpdated){
       if(err)
         return res.sendStatus(500);
-      res.status(200).json(shoppingList);
+      res.status(200).json(shoppingListUpdated);
     });
   });
 

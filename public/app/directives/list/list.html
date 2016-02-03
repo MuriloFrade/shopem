@@ -7,7 +7,7 @@
     <div ng-repeat="item in data.items">
       <div class="item" ng-click="options.itemClick(item, data)">
         <span class="ckeckbox">
-          <i class="fa fa-2x" ng-click="options.checkClick(item);$event.stopPropagation()" ng-class=" item.wasPurchased ? 'fa-check-square-o' : 'fa-square-o' "></i>
+          <i class="fa fa-2x" ng-click="options.checkClick(item, data);$event.stopPropagation()" ng-class=" item.wasPurchased ? 'fa-check-square-o' : 'fa-square-o' "></i>
         </span>
         <h3>{{item.title}}</h3>
         <span class="details" ng-show="item.detail">

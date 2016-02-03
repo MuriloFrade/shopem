@@ -247,21 +247,21 @@ describe('routes tests', function () {
 
     describe('POST /shoppinglists/:id/items', function(){
       it('return 201 STATUSCODE and a shopping list object', function(done){
-        var item = {
+        var newItem = {
           title: '12 oranges',
           detail: 'Should prefer buy oranges from Brazil',
           wasPurchased: false,
         };
         request
           .post('/shoppinglists/' + shoppingListTest._id + '/items')
-          .send(item)
+          .send(newItem)
           .expect(201)
           .expect('Content-Type', /json/)
           .end(function (err, res){
             should.equal(err, null);
-            should.equal(res.body.items.length, 2);
-            shoppingListTest = res.body;
-            shoppingListItemTest = res.body.items.find(e => e.title == '12 oranges');
+            should.equal(res.body.title, newItem.title);
+            shoppingListTest.items.push(res.body);
+            shoppingListItemTest = res.body;
             done();
           });
       });
@@ -283,17 +283,16 @@ describe('routes tests', function () {
 
     describe('PUT /shoppinglists/:id/items/:itemId', function(){
       it('respond with 200 status code and an shoppinglist updated', function(done){
-        shoppingListItemTest.title = '1 orange';
+        shoppingListItemTest.title = '123 orange';
         request
           .put('/shoppinglists/' + shoppingListTest._id + '/items/' + shoppingListItemTest._id)
           .send(shoppingListItemTest)
           .expect(200)
           .expect('Content-Type', /json/)
           .end(function (err, res){
-            should.equal(err, null);
-            var itemUpdated = res.body.items.find(e => e._id === shoppingListItemTest._id );
-            should.equal(shoppingListItemTest.title, itemUpdated.title);
-            shoppingListItemTest = itemUpdated;
+            should.equal(err, null);            
+            should.equal(shoppingListItemTest.title, res.body.title);
+            shoppingListItemTest = res.body;
             done();
           });
       });

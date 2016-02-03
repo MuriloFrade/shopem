@@ -55,11 +55,11 @@ function remove (id, callback){
 function addItem (shoppingListId, item, callback){
   get(shoppingListId, function(err, shoppingList){
     if(err) callback(err, null);
-
+    var newItemIndex = shoppingList.items.length;
     shoppingList.items.push(item);
-    update(shoppingList._id, shoppingList, function(err, result){
+    update(shoppingList._id, shoppingList, function(err, shoppingList){
       if(err) callback(err, null);
-      callback(null, result);
+      callback(null, shoppingList.items[newItemIndex]);
     });
   });
 
@@ -74,9 +74,9 @@ function updateItem (shoppingListId, itemId, item, callback){
       throw new ShoppingListDbError('item not found in collection of items of shoppinglist');
 
     shoppingList.items[itemIdex] = item;
-    update(shoppingList._id, shoppingList, function(err, result){
+    update(shoppingList._id, shoppingList, function(err, shoppingList){
       if(err) callback(err, null);
-      callback(null, result);
+      callback(null, shoppingList.items[itemIdex]);
     });
   });
 }

@@ -15,6 +15,13 @@
         '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f',
         '#e67e22', '#e74c3c', '#DB0A5B', '#95a5a6', '#f39c12', '#d35400',
         '#c0392b', '#bdc3c7', '#7f8c8d'];
+      vm.listToCreate = {};
+      vm.listToEdit = {};
+      vm.listToDelete = {};
+      vm.listToAddItem = {};
+      vm.itemListToCreate = {};
+      vm.itemListToEdit = { list : {}, item : {} };
+      vm.itemListToDelete = { list : {}, item : {} };
 
       // called when the user clicks on button to create a new list
       vm.showListModal = function(){
@@ -68,23 +75,28 @@
       };
       // called when the form for create an item list is submmited
       vm.createItemList = function(){
-        ShoppingListSvc.createItem(vm.listToAddItem, vm.itemListToCreate, function(e, shoppingList){
+        ShoppingListSvc.createItem(vm.listToAddItem, vm.itemListToCreate, function(e, itemCreated){
           if(e){
             console.log(e);
             return;
           }
-          vm.lists[getListIndexById(vm.listToAddItem)] = shoppingList;
+          vm.lists[getListIndexById(vm.listToAddItem._id)].items.push(itemCreated);
           hideModal('shownNewItemListModal');
         });
       };
       // called whe the form for edit an item list is submmited
       vm.editItemList = function(){
-        ShoppingListSvc.updateItem(vm.itemListToEdit.list, vm.itemListToEdit.item, function(e, shoppingList){
+        ShoppingListSvc.updateItem(vm.itemListToEdit.list, vm.itemListToEdit.item, function(e, itemUpdated){
           if(e){
             console.log(e);
             return;
           }
-          vm.lists[getListIndexById(vm.itemListToEdit.list._id)] = shoppingList;
+          var index = vm.itemListToEdit.list.items.findIndex(function (e) {
+            if(e._id == itemUpdated._id){
+              return true;
+            }
+          });
+          vm.lists[getListIndexById(vm.itemListToEdit.list._id)].items[index] = itemUpdated;
           hideModal('shownEditItemListModal');
         });
       };
@@ -107,7 +119,7 @@
               return true;
             }
           });
-          vm.itemListToDelete.list.items.splice(itemIdex, 1);
+          vm.lists[getListIndexById(vm.itemListToDelete.list._id)].items.splice(itemIdex, 1);
           hideModal('shownConfirmDeleteItemListModal');
         });
       };
@@ -131,12 +143,15 @@
       }
 
       function listItemClick(item, list){
-        vm.itemListToEdit = { item: item, list: list };
+        vm.itemListToEdit = { item: angular.copy(item), list: angular.copy(list) };
         showModal('shownEditItemListModal');
       }
 
-      function listCheckClick(item){
-        item.wasPurchased = !item.wasPurchased;
+      function listCheckClick(item, list){
+        var itemCopy = angular.copy(item);
+        itemCopy.wasPurchased = !itemCopy.wasPurchased;
+        vm.itemListToEdit = { item: itemCopy, list: angular.copy(list) };
+        vm.editItemList();
       }
       function showModal(controlVar) { vm[controlVar] = true; }
       function hideModal(controlVar) { vm[controlVar] = false; }
