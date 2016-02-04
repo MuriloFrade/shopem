@@ -12,6 +12,11 @@
                 controller: "IndexCtrl",
                 controllerAs: "index"
             })
+            .when("/user", {
+                templateUrl: "/app/partials/user.html",
+                controller: "UserCtrl",
+                controllerAs: "user"
+            })
             .otherwise({ redirectTo: "/" });
     }
 

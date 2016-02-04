@@ -9,26 +9,36 @@
 }
 
 .list .header {
+  position: relative;
   background-color: #bdc3c7;
   padding: 10px;
   border-bottom: 1px solid #A4A4A4;;
 }
 
 .list .header h1 {
+  display: inline-block;
   color: #ECF0F1;
   font-size: 20px;
   font-weight: 400;
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 215px;
 }
-.list .header h1 i{
+.list .header i{
+  top: 10px;
+  right: 10px;
+  position: absolute;
+  font-size: 1.5em;
   float: right;
   color: #ECF0F1;
   visibility: hidden;
 }
-.list .header:hover h1 i{
+.list .header:hover i{
   visibility: visible;
 }
-.list .header h1 i:hover{
+.list .header i:hover{
   cursor: pointer;
   opacity: 0.8;
 }
@@ -40,12 +50,14 @@
 }
 
 .items-list .item{
-  padding: 10px;
+  position: relative;
+  padding: 15px;
   margin-top: 5px;
   background: #E7E7E7;
   border: 1px solid #DDD;
   border-radius: 5px;
   border-bottom: 2px solid #bdc3c7;
+  /*overflow: hidden;*/
 }
 
 .items-list .item:hover {
@@ -54,27 +66,31 @@
 }
 
 .items-list .item .ckeckbox i{
-  margin-right: 5px;
-  vertical-align: middle;
+  position: absolute;
+  top: 13px;
 }
 .items-list .item .ckeckbox i:hover{
-  font-weight: 600;
+  opacity: 0.8;
 }
 
-.items-list .item h3{
+.items-list .item .item-title{
   margin: 0px 0px;
+  margin-left: 30px;
   font-size: 16px;
   font-weight: 100;
-  display: inline-block;
+  max-width: 180px;
+  word-wrap: break-word;
 }
 
 .items-list .item .details i{
+  margin-left: 5px;
   float: right;
   vertical-align: middle;
   visibility:hidden;
 }
 .items-list .item:hover .details i{
   visibility:visible;
+  font-weight: 500;
 }
 
 .list .add-item {

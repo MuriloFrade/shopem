@@ -1,14 +1,48 @@
 body {
-  padding: 50px;
   font: 14px Montserrat, "Lucida Grande", Helvetica, Arial, sans-serif;
   color: #333;
 }
 
-
 a {
   color: #00B7FF;
 }
+header {
+  height: 50px;
+  /*padding: 20px;*/
+  width: 100%;
+  background: white;
+  top: 0;
+  left: 0;
+  position: fixed;
+  border-bottom: 1px solid #A4A4A4;
+  text-align: center;
 
+}
+
+header .logo{
+  margin: 5px auto;
+  display: inline-block;
+}
+header .logo a{
+  text-decoration: none;
+  color:#333;
+}
+header .logo a:hover {
+  opacity: 0.8;
+}
+header .user-logged{
+  position: absolute;
+  right: 20px;
+  top: 15px;
+}
+header .user-logged a{
+  text-decoration: none;
+  color:#333;
+}
+header .user-logged:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
 button {
   margin: 10px;
   font-size: 1.2em;
@@ -32,7 +66,9 @@ button:hover{ opacity: 0.8; }
 button:active{ opacity: 0.6; }
 button:focus { outline: none; }
 
-
+.main-content{
+  padding: 50px;
+}
 /* form for a list */
 .form-list label{
   margin: 10px 10px 0px 10px;

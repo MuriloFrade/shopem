@@ -1,6 +1,7 @@
 <div class="list" >
   <div class="header" ng-style=" { 'background-color' : color } ">
-      <h1>{{data.title}}<i class="fa fa-pencil" ng-click="options.editList(data)"></i></h1>
+      <h1>{{data.title}}</h1>
+      <span><i class="fa fa-pencil" ng-click="options.editList(data)"></i></span>
   </div>
 
   <div class="items-list">
@@ -9,7 +10,7 @@
         <span class="ckeckbox">
           <i class="fa fa-2x" ng-click="options.checkClick(item, data);$event.stopPropagation()" ng-class=" item.wasPurchased ? 'fa-check-square-o' : 'fa-square-o' "></i>
         </span>
-        <h3>{{item.title}}</h3>
+        <span class="item-title">{{item.title}}</span>
         <span class="details" ng-show="item.detail">
           <i class="fa fa-comment-o "></i>
         </span>
