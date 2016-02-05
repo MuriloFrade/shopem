@@ -3,12 +3,12 @@
 
     app.controller('UserCtrl', userCtrl);
 
-    indexCtrl.$inject = ['$scope'];
+    userCtrl.$inject = [];
 
     function userCtrl($scope) {
       // View Model !
       var vm = this; // jshint ignore:line
-      
+
     }
 
 })(angular.module('ShoppingListApp'));
