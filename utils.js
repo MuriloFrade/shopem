@@ -10,7 +10,15 @@ function loggedIn(req, res, next) {
     if (req.user) {
         next();
     } else {
-        res.sendStatus(401);
+      var isAjaxRequest = req.xhr;
+      if(isAjaxRequest){
+        res.send(401, {
+            error: "Unauthorized"
+        });
+      }else{
+        res.redirect('/login');
+      }
+
     }
 }
 

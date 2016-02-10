@@ -7,7 +7,7 @@ var assert = require('assert'),
 
 // delete all test data created in the database test during unit tests that failed
 function cleanTestData(callback){
-  UserDbService.getByUsername('test@test.com', function(err, result){
+  UserDbService.getByUsername('usertest@test.com', function(err, result){
     if(result){
       UserDbService.remove(result, callback);
     }else{
@@ -33,12 +33,15 @@ describe('services tests', function (){
     describe('#add', function () {
       it('should return a new user without erros', function (done) {
         var user = {
-          username: 'userTest',
+          name: 'User Test',
+          username: 'usertest@test.com',
           password: 'foo',
         };
         UserDbService.add(user, function(err, result){
           should.equal(err, null);
           result.should.have.property('_id');
+          should.equal(result.name, user.name);
+          should.equal(result.username, user.username);
           userTest = result;
           done();
         });
@@ -51,6 +54,7 @@ describe('services tests', function (){
           should.equal(err, null);
           result._id.equals(userTest._id).should.be.true();
           should.equal(result.username, userTest.username);
+          should.equal(result.name, userTest.name);
           done();
         });
       });
@@ -97,7 +101,8 @@ describe('services tests', function (){
     var currentShoppingList = null;
     before(function (done) {
       var user = {
-        username: 'userTest',
+        username: 'usertest@test.com',
+        name: 'User Test',
         password: 'foo',
       };
       UserDbService.add(user, function (err, result){
@@ -181,7 +186,7 @@ describe('services tests', function (){
       it('should update an item of the shoppingList', function (done) {
         var item = currentShoppingList.items[0];
         item.title = '10 apples';
-        ShoppingListDbService.updateItem(currentShoppingList._id, item._id, item, function(err, itemUpdated){          
+        ShoppingListDbService.updateItem(currentShoppingList._id, item._id, item, function(err, itemUpdated){
           should.equal(err, null);
           should.equal(item.title, itemUpdated.title);
           done();

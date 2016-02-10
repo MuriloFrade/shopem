@@ -12,6 +12,7 @@ var assert = require('assert'),
 
 var server = http.createServer(app);
 var userTest = {
+  name: 'foo bar',
   username: 'foo@foo.com',
   password: 'bar',
 };
@@ -90,8 +91,9 @@ describe('routes tests', function () {
 
     describe('POST /register', function(){
       it('return an error with 500 STATUSCODE', function(done){
-        // try to create the same user
+        // try to create a user with the same username
         var user = {
+          name: 'Foo Bar',
           username: userTest.username,
           password: 'foo',
         };
@@ -118,13 +120,14 @@ describe('routes tests', function () {
     });
 
     describe('POST /login', function(){
-      it('return 200 STATUSCODE', function(done){
+      it('return 200 STATUSCODE and the app page', function(done){
         // do a login
         request
           .post('/login')
           .send(userTest)
-          .expect(200)
+          .expect(302)
           .end(function (err, res){
+            should.equal(res.header.location, '/app');
             should.equal(err, null);
             done();
           });
@@ -132,10 +135,15 @@ describe('routes tests', function () {
     });
 
     describe('GET /logout', function(){
-      it('respond with 200 status code', function(done){
+      it('respond with 302 status code and redirect to /login', function(done){
         request
           .get('/logout')
-          .expect(200, done);
+          .expect(302)
+          .end(function(err, res){
+            should.equal(res.header.location, '/login');
+            should.equal(err, null);
+            done();
+          });
       });
     });
     describe('GET /', function(){
@@ -155,7 +163,10 @@ describe('routes tests', function () {
 
     before(function (done) {
       // login again
-      request.post('/login').send(userTest).expect(200).end(done);
+      request.post('/login').send(userTest).end(done);
+    });
+    after(function (done) {
+      request.get('/logout').end(done);
     });
     describe('GET /shoppinglists', function(){
       it('respond with 200 status code and an empty array', function(done){
@@ -290,7 +301,7 @@ describe('routes tests', function () {
           .expect(200)
           .expect('Content-Type', /json/)
           .end(function (err, res){
-            should.equal(err, null);            
+            should.equal(err, null);
             should.equal(shoppingListItemTest.title, res.body.title);
             shoppingListItemTest = res.body;
             done();
@@ -311,17 +322,6 @@ describe('routes tests', function () {
           });
       });
     });
-    /*********************  ROUTES APP     *********************/
-
-    describe('routes /app', function(){
-      describe('GET /app', function(){
-        it('respond with a page', function(done){
-          request
-            .get('/app')
-            .expect('Content-Type', /text\/html/, done);
-        });
-      });
-    });
 
     /***********************************************************/
     // delete the shopping at the end of all tests
@@ -340,5 +340,47 @@ describe('routes tests', function () {
   }); //end :route: /shoppinglists
 
 
+  /*********************  ROUTES APP     *********************/
 
-});
+  describe('routes /app', function(){
+
+    before(function (done) {
+      request.get('/logout').end(done);
+    });
+
+    // describe('GET /app unlogged', function(done){
+    //   it('respond with 303 status and redirects to /login', function(done){
+    //     request
+    //       .get('/app')
+    //       .end(function (err, res){
+    //         should.equal(err, null);
+    //         should.equal(res.header.location, '/login');
+    //         done();
+    //       });
+    //   });
+    // });
+
+    describe('GET /app logged', function(){
+      before(function (done) {
+        request.post('/login').send(userTest).end(done);
+      });
+
+      it('respond with a page', function(done){
+        request
+          .get('/app')
+          .expect('Content-Type', /text\/html/)
+          .end(function (err, res){
+            should.equal(err, null);
+            res.headers.location.should.containEql('/app');
+            done();
+          });
+      });
+    });
+
+  }); // end ROUTES APP
+
+
+
+
+
+}); // END routes tests

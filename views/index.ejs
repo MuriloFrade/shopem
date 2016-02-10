@@ -1,19 +1,76 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1>Shopping lists</h1>
-    <p>Welcome to shoppinglists</p>
-    <% if (user){ %>
-          <p>Hi, I am <%= user.username %></p>
-          <a href="/logout">Logout</a>
-    <% }%>
-    <% if (!user){ %>
-          <a href="/register">Register</a> or <a href="/login">Login!</a>
-    <% }%>
-    
-  </body>
-</html>
+
+<div class="top-content">
+  <header>
+    <div class="logo">
+        <a href="#">MyLogo</a>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="/register">sign up</a></li>
+        <li>
+          <% if (user){ %>
+                <a href="/logout">logout</a>
+          <% }%>
+          <% if (!user){ %>
+                <a href="/login">login</a>
+          <% }%>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <!-- banner section  -->
+  <section class="banner">
+    <div class="container">
+      <h1 class="">Never forget your shopping lists</h1>
+      <p class="">Create your shopping lists and access them from everywhere</p>
+      <a href="/register" class="call-to-action">START NOW</a>
+    </div>
+  </section>
+</div>
+
+
+<section class="product-description row container">
+  <div class="app-images">
+    <img src="/images/print1.png" alt="application image" />
+  </div>
+  <div class="features">
+    <div class="details cs-12 cd-4">
+      <h3>Create shopping lists for your needs</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      </p>
+    </div>
+    <div class="details cs-12 cd-4">
+      <h3>Choose different colors</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      </p>
+    </div>
+    <div class="details cs-12 cd-4">
+      <h3>Check your itens when it was purshased</h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      </p>
+    </div>
+  </div> <!--  end div.features -->
+</section>
+
+<section class="soon">
+  <div class="container">
+    <h2>Awesome features comming soon</h2>
+    <div class="row">
+      <div class="icon cs-12 cd-4">
+        <span><i class="fa fa-mobile green"></i></span>
+        <h3>Mobile App</h3>
+      </div>
+      <div class="icon cs-12 cd-4">
+        <span><i class="fa fa-share-alt blue"></i></span>
+        <h3>Share ShoppingLists</h3>
+      </div>
+      <div class="icon cs-12 cd-4">
+        <span><i class="fa fa-envelope-o yellow"></i></span>
+        <h3>Email Notifications</h3>
+      </div>
+    </div>
+  </div> <!--end container -->
+</section>

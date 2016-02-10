@@ -6,7 +6,7 @@ var UserDbService = require('../services/user-db');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express', user : req.user });
+  res.render('index', { user : req.user });
 });
 
 /* GET register page. */
@@ -19,6 +19,7 @@ router.post('/register', function(req, res) {
   var newUser = null;
   try {
     newUser = {
+      name: req.body.name,
       username: req.body.username,
       password: req.body.password,
     };
@@ -48,13 +49,13 @@ router.get('/login', function(req, res) {
 
 /* POST login page. */
 router.post('/login', passport.authenticate('local'), function(req, res) {
-    res.sendStatus(200);
+    res.redirect(302, '/app');
 });
 
 
 router.get('/logout', function(req, res) {
     req.logout();
-    res.sendStatus(200);
+    res.redirect(302, '/login');
 });
 
 module.exports = router;
