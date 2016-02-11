@@ -58,32 +58,39 @@ describe('routes tests', function () {
       });
     });
     describe('POST /register', function(){
-      it('return a new user with 201 STATUSCODE', function(done){
+      it('Create an user, loggin and go to App page', function(done){
         request
           .post('/register')
           .send(userTest)
-          .expect('Content-Type', /json/)
-          .expect(201) //created
+          .expect(302) //redirect
           .end(function (err, res){
             should.equal(err, null);
-            res.body.should.have.property('_id');
+            should.equal(res.header.location, '/app');
             done();
           });
       });
     });
 
     describe('POST /register', function(){
-      it('return an error with 400 STATUSCODE', function(done){
+      it('Try to create an user without fill the form. The user get back to /register page', function(done){
         // send an user with invalid properties
         var user = {};
         request
           .post('/register')
           .send(user)
-          .expect('Content-Type', /json/)
-          .expect(400) //created
           .end(function (err, res){
             should.equal(err, null);
-            res.body.should.have.property('error');
+            should.equal(res.header.location, '/register');
+            done();
+          });
+      });
+      it('Try to create an user with invalid values. The user get back to /register page', function(done){
+        request
+          .post('/register')
+          .send( { name : 123123, username : 'asdasdadasd', password : ''})
+          .end(function (err, res){
+            should.equal(err, null);
+            should.equal(res.header.location, '/register');
             done();
           });
       });
