@@ -62,7 +62,6 @@ describe('routes tests', function () {
         request
           .post('/register')
           .send(userTest)
-          .expect(302) //redirect
           .end(function (err, res){
             should.equal(err, null);
             should.equal(res.header.location, '/app');

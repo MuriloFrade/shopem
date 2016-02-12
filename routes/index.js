@@ -13,12 +13,17 @@ router.get('/', function(req, res, next) {
 
 /* GET register page. */
 router.get('/register', function(req, res) {
-    res.render('register', { });
+    res.render('register', { errors : req.query.errors});
 });
 
 /* POST register page. */
 router.post('/register', function(req, res) {
-  var erros = [];
+  var newUser = getUserFromReq(req);
+  var errors = validateUser(newUser);
+  if(errors){
+    var errorsString = encodeURIComponent(errors);
+    return res.redirect(302, '/register?errors=' +errorsString);
+  }
 
   // code to be used in the API
   // try {
@@ -38,10 +43,13 @@ router.post('/register', function(req, res) {
     //   res.status(500).json({ error : err }); // Internal Server Error
     //   return;
     // }
+    if(err){
+      return res.render('register', { errors: [err.defaultMessage] });
+    }
 
     passport.authenticate('local')(req, res, function () {
-      //res.redirect('/');
       res.redirect(302, '/app');
+      return;
     });
 
   });
@@ -66,22 +74,6 @@ router.get('/logout', function(req, res) {
 
 // Helpers
 
-function getUserAndValidate(req){
-  var errors = [];
-  var newUser = {
-    name: req.body.name,
-    username: req.body.username,
-    password: req.body.password,
-  };
-  for (var prop in newUser) {
-    if(newUser[prop] !== undefined) continue;
-    else errors.push({ message : 'The field ' +userFieldToString(prop) + ' is required.' });
-  }
-  if(errors.length > 0) return errors;
-
-  // specific validations
-}
-
 function userFieldToString(field){
   if(field == 'name'){
     return 'Name';
@@ -90,6 +82,37 @@ function userFieldToString(field){
   }else if(field == 'password'){
     return 'Password';
   }
-
   return field;
+}
+function getUserFromReq(req){
+  return {
+    name: req.body.name,
+    username: req.body.username,
+    password: req.body.password,
+  };
+}
+function validateUser(newUser){
+  var errors = [];
+
+  if(newUser.name === undefined || newUser.name.length === 0){
+    errors.push({ message : 'The field ' + 'Name' + ' is required.' });
+    return errors;
+  }
+  // password validation
+  if(newUser.password === undefined || newUser.password.length === 0){
+    errors.push({ message : 'The field ' + 'Password' + ' is required.' });
+    return errors;
+  }
+  // username validation
+  var emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if(newUser.username === undefined ){
+    errors.push({ message : 'The field ' + 'Email' + ' is required.' });
+    return errors;
+  }
+  else if( !emailRegex.test(newUser.username)){
+    errors.push({ message : 'The field ' + 'Email' + ' is invalid.' });
+    return errors;
+  }
+
+  return null;
 }

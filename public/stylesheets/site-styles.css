@@ -30,6 +30,9 @@ a {
 .yellow {
   color: #f1c40f;
 }
+.red {
+  color: #e74c3c;
+}
 .container{
   width: 85%;
 }
@@ -193,6 +196,7 @@ footer p {
 section.auth{
   max-width: 50%;
   margin: 0 auto;
+  padding-bottom: 5%;
 }
 section.auth .logo{
   display: block;
