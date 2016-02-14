@@ -13,16 +13,19 @@ router.get('/', function(req, res, next) {
 
 /* GET register page. */
 router.get('/register', function(req, res) {
-    res.render('register', { errors : req.query.errors});
+    var errors = req.session.errors;
+    req.session.errors = null;
+    res.render('register', { errors : errors});
 });
 
 /* POST register page. */
 router.post('/register', function(req, res) {
   var newUser = getUserFromReq(req);
-  var errors = validateUser(newUser);
-  if(errors){
-    var errorsString = encodeURIComponent(errors);
-    return res.redirect(302, '/register?errors=' +errorsString);
+  var errors = [];
+  errors = validateUser(newUser);
+  if(errors.length > 0){
+    req.session.errors = errors;
+    return res.redirect(302, '/register');
   }
 
   // code to be used in the API
@@ -44,7 +47,9 @@ router.post('/register', function(req, res) {
     //   return;
     // }
     if(err){
-      return res.render('register', { errors: [err.defaultMessage] });
+      errors.push(err);
+      req.session.errors = errors;
+      return res.redirect(302, '/register');
     }
 
     passport.authenticate('local')(req, res, function () {
@@ -114,5 +119,5 @@ function validateUser(newUser){
     return errors;
   }
 
-  return null;
+  return errors;
 }

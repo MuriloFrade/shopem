@@ -83,21 +83,9 @@ describe('routes tests', function () {
             done();
           });
       });
-      it('Try to create an user with invalid values. The user get back to /register page', function(done){
-        request
-          .post('/register')
-          .send( { name : 123123, username : 'asdasdadasd', password : ''})
-          .end(function (err, res){
-            should.equal(err, null);
-            should.equal(res.header.location, '/register');
-            done();
-          });
-      });
     });
-
     describe('POST /register', function(){
-      it('return an error with 500 STATUSCODE', function(done){
-        // try to create a user with the same username
+      it('Try to create a user with the same username. The user get back to /register page', function(done){
         var user = {
           name: 'Foo Bar',
           username: userTest.username,
@@ -106,11 +94,9 @@ describe('routes tests', function () {
         request
           .post('/register')
           .send(user)
-          .expect('Content-Type', /json/)
-          .expect(500) //created
           .end(function (err, res){
             should.equal(err, null);
-            res.body.should.have.property('error');
+            should.equal(res.header.location, '/register');
             done();
           });
       });
