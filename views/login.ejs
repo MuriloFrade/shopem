@@ -5,7 +5,9 @@
   </div>
 
   <h1>Login</h1>
-
+  <% if(error) { %>
+    <p class="red"><%= error %></p>
+  <% } %>
   <form  action="/login" method="post">
     <input type="text" name="username" value="" placeholder="Email">
     <input type="password" name="password" value="" placeholder="Password">

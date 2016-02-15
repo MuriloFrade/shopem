@@ -63,14 +63,21 @@ router.post('/register', function(req, res) {
 
 /* GET login page. */
 router.get('/login', function(req, res) {
-    res.render('login', { });
+  console.log('--------------------->>>>>');
+
+  var error = req.flash('error').toString();
+  console.log(error);
+    res.render('login', { error : error } );
 });
 
 /* POST login page. */
-router.post('/login', passport.authenticate('local'), function(req, res) {
-    res.redirect(302, '/app');
-});
+// router.post('/login', passport.authenticate('local'), function(req, res) {
+//     res.redirect(302, '/app');
+// });
 
+router.post('/login', passport.authenticate('local', { successRedirect: '/app',
+                                   failureRedirect: '/login',
+                                   failureFlash: true }));
 
 router.get('/logout', function(req, res) {
     req.logout();

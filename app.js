@@ -38,7 +38,7 @@ app.use(expressSession({
 }));
 app.use(flash());
 
-// // passport authentication middlewares and config
+// // passport authentication config
 app.use(passport.initialize());
 app.use(passport.session());
 
