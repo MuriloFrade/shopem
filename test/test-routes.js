@@ -339,25 +339,16 @@ describe('routes tests', function () {
     before(function (done) {
       request.get('/logout').end(done);
     });
-
-    // describe('GET /app unlogged', function(done){
-    //   it('respond with 303 status and redirects to /login', function(done){
-    //     request
-    //       .get('/app')
-    //       .end(function (err, res){
-    //         should.equal(err, null);
-    //         should.equal(res.header.location, '/login');
-    //         done();
-    //       });
-    //   });
-    // });
+    after(function(done){
+      request.get('/logout').end(done);
+    });
 
     describe('GET /app logged', function(){
       before(function (done) {
         request.post('/login').send(userTest).end(done);
       });
 
-      it('respond with a page', function(done){
+      it('responds with a page', function(done){
         request
           .get('/app')
           .expect('Content-Type', /text\/html/)
@@ -369,10 +360,71 @@ describe('routes tests', function () {
       });
     });
 
+    describe('GET /app/user', function(){
+      it('responds the with an oject for the current user logged', function(done){
+        request
+          .get('/app/user')
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .end(function (err, res){
+            should.equal(err, null);
+            res.body.should.have.property('_id');
+            res.body.should.have.property('name');
+            res.body.should.have.property('username');
+            done();
+          });
+      });
+    });
+
+    describe('PUT /app/user',function(){
+      it('Update the name and username of the user logged', function(done){
+        var fieldsToUpdate = {
+          name : 'new name',
+          username : 'new@new.com'
+        };
+        request
+          .put('/app/user')
+          .send(fieldsToUpdate)
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .end(function (err, res){
+            var userUpdated = res.body;
+            should.equal(err, null);
+            userUpdated.should.have.property('_id');
+            should.equal(userUpdated.name, fieldsToUpdate.name);
+            should.equal(userUpdated.username, fieldsToUpdate.username);
+            userTest._id = userUpdated._id;
+            // get back to the original test user
+            UserDbService.update(userTest, function(err, result){
+              done();
+            });
+
+          });
+      });
+    });
+
+    describe('POST /app/user/setpassword',function(){
+
+      it('Updates the password of the current user logged',function(done){
+        var newPw = '123456';
+        request
+          .post('/app/user/setpassword')
+          .send({ password: newPw })
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .end(function (err, res){
+            var userUpdated = res.body;
+            should.equal(err, null);
+            userUpdated.should.have.property('_id');
+            userTest.password = newPw;
+            // try to login with the new password
+            request.get('/logout').end(function(){
+              request.post('/login').send(userTest).end(done);
+            });
+          });
+      });
+    });
+
   }); // end ROUTES APP
-
-
-
-
 
 }); // END routes tests

@@ -63,10 +63,7 @@ router.post('/register', function(req, res) {
 
 /* GET login page. */
 router.get('/login', function(req, res) {
-  console.log('--------------------->>>>>');
-
-  var error = req.flash('error').toString();
-  console.log(error);
+  var error = req.flash('error').toString();  
     res.render('login', { error : error } );
 });
 

@@ -12,54 +12,54 @@ ShoppingListDbError.prototype.constructor = ShoppingListDbError;
 function getAllFromUser (userId, callback){
   ShoppingList.find({_ownerId : userId}, function (err, results) {
     if(err)
-    callback(err);
+    return callback(err);
 
-    callback(null, results);
+    return callback(null, results);
   });
 }
 function add (shoppingList, callback){
   var newShoppingList = new ShoppingList(shoppingList);
   newShoppingList.save(function(err, result, numAffected){
     if(err)
-      callback(err);
+      return callback(err);
 
     if(numAffected === 0)
-      callback(result.error);
+      return callback(result.error);
 
-    callback(null, result);
+    return callback(null, result);
   });
 }
 function get (id, callback){
   ShoppingList.findOne({ _id: id }, function (err, shoppingList) {
     if(err)
-      callback(err);
+      return callback(err);
 
-    callback(null, shoppingList);
+    return callback(null, shoppingList);
   });
 }
 
 function update (id, shoppingList, callback){
   ShoppingList.findOneAndUpdate({ _id: id }, shoppingList, { new: true }, function(err, result){
-    if(err) callback(err, null);
-    callback(null, result);
+    if(err) return callback(err, null);
+    return callback(null, result);
   });
 }
 
 function remove (id, callback){
   ShoppingList.remove({_id: id}, function(err){
-    if(err) callback(err, item);
-    callback(null, null);
+    if(err) return callback(err, item);
+    return callback(null, null);
   });
 }
 
 function addItem (shoppingListId, item, callback){
   get(shoppingListId, function(err, shoppingList){
-    if(err) callback(err, null);
+    if(err) return callback(err, null);
     var newItemIndex = shoppingList.items.length;
     shoppingList.items.push(item);
     update(shoppingList._id, shoppingList, function(err, shoppingList){
-      if(err) callback(err, null);
-      callback(null, shoppingList.items[newItemIndex]);
+      if(err) return callback(err, null);
+      return callback(null, shoppingList.items[newItemIndex]);
     });
   });
 
@@ -67,7 +67,7 @@ function addItem (shoppingListId, item, callback){
 
 function updateItem (shoppingListId, itemId, item, callback){
   get(shoppingListId, function(err, shoppingList){
-    if(err) callback(err, null);
+    if(err) return callback(err, null);
 
     var itemIdex = shoppingList.items.findIndex(e => e._id.equals(itemId));
     if(itemIdex === -1)
@@ -75,15 +75,15 @@ function updateItem (shoppingListId, itemId, item, callback){
 
     shoppingList.items[itemIdex] = item;
     update(shoppingList._id, shoppingList, function(err, shoppingList){
-      if(err) callback(err, null);
-      callback(null, shoppingList.items[itemIdex]);
+      if(err) return callback(err, null);
+      return callback(null, shoppingList.items[itemIdex]);
     });
   });
 }
 
 function removeItem (shoppingListId, itemId, callback){
   get(shoppingListId, function(err, shoppingList){
-    if(err) callback(err, null);
+    if(err) return callback(err, null);
 
     var itemIdex = shoppingList.items.findIndex(function (e) {
       if(e._id.equals(itemId)){
@@ -95,8 +95,8 @@ function removeItem (shoppingListId, itemId, callback){
 
     shoppingList.items.splice(itemIdex,1);
     update(shoppingList._id, shoppingList, function(err, result){
-      if(err) callback(err, null);
-      callback(null, result);
+      if(err) return  callback(err, null);
+      return callback(null, result);
     });
   });
 }

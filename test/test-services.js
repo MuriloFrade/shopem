@@ -64,12 +64,15 @@ describe('services tests', function (){
       it('should update an user', function (done) {
         //userTest.username = 'userTest2';
         userTest.username = 'test2@test.com';
+        userTest.name = 'test2';
         UserDbService.update(userTest, function(err, result){
           should.equal(err, null);
           //should.equal(userTest.username, result.username);
           should.equal(userTest.username, result.username);
+          should.equal(userTest.name, result.name);
           // get back to the original user
           userTest.username = 'userTest';
+
           UserDbService.update(userTest, function(err, result){
             done();
           });
