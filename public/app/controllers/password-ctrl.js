@@ -32,7 +32,7 @@
             return;
           }
           vm.error  = '';
-
+          vm.old = vm.new = vm.confirm = '';
         });
       };
     }
