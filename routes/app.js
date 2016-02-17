@@ -33,18 +33,24 @@ router.put('/user', function(req, res, next) {
 });
 
 router.post('/user/setpassword', function (req, res){
-  var userToUpdate = req.user;
-  var newPw = null;
+  var userToUpdate = req.user,
+      newPw = null,
+      oldPw = null;
   try {
-    newPw = req.body.password;
+    newPw = req.body.newPassword;
+    oldPw = req.body.oldPassword;
   } catch (e) {
     return res.status(400).json({ error : e }); // Bad Request
   }
-  userToUpdate.setPassword(newPw, function(err, userUpdated){
-    if(err)
-      return res.sendStatus(500);
+  userToUpdate.authenticate(oldPw, function(err, user){
+    if(err || !user)
+      return res.status(400).json({ error : 'The old password is not valid.' });
+    userToUpdate.setPassword(newPw, function(err, userUpdated){
+      if(err)
+        return res.sendStatus(500);
 
-    res.json(userDbToVm(userUpdated));
+      res.json(userDbToVm(userUpdated));
+    });
   });
 
 });

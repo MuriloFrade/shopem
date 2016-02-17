@@ -1,3 +1,10 @@
-<p>
-  aaaaaaaaaaaa
-</p>
+
+
+<form class="user" >
+  <label for="name">Name</label>
+  <input type="text" name="name" ng-model="user.userLogged.name">
+  <label for="username">Email</label>
+  <input type="text" name="username" ng-model="user.userLogged.username">
+  <a class="change-pw" href="#/setpassword">Change password</a>
+  <button type="submit" ng-click="user.update(user.userLogged)" name="button">Update</button>
+</form>

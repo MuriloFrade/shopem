@@ -406,10 +406,12 @@ describe('routes tests', function () {
     describe('POST /app/user/setpassword',function(){
 
       it('Updates the password of the current user logged',function(done){
-        var newPw = '123456';
+        var newPw = '123456',
+            oldPw = userTest.password;
+
         request
           .post('/app/user/setpassword')
-          .send({ password: newPw })
+          .send({ oldPassword : oldPw, newPassword: newPw })
           .expect(200)
           .expect('Content-Type', /json/)
           .end(function (err, res){

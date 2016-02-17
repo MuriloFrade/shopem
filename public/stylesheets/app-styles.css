@@ -111,3 +111,38 @@ button:focus { outline: none; }
   color: #e74c3c;
 }
 .form-list .delete:hover{ opacity: 0.8; }
+
+form.user {
+  padding-top: 5%;
+  max-width: 50%;
+  margin: 0 auto;
+}
+form.user input {
+  display: block;
+  margin: 2% auto;
+  width: 100%;
+  height: 35px;
+  padding-left: 1%;
+}
+form.user button {
+  display: inline-block;
+  width: 30%;
+  height: 40px;
+  color: #fff;
+  background: #2ecc71;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 5% 0;
+
+}
+form.user label {
+  display: block;
+}
+a.change-pw{
+  display: block;
+  margin: 0 auto;
+}
+form.user span.error {
+  color: #e74c3c;
+}

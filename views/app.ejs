@@ -32,21 +32,8 @@
 
   </head>
   <body>
-    <header>
+    <header ng-controller="HeaderCtrl as header" ng-include src="'/app/partials/header.html'"></header>
 
-      <h1 class="logo"><a href="#/">MyLogo</a></h1>
-
-      <div class="user-logged">
-        <span class="user-name">
-          <a href="#/user">
-            <%= user.name %>
-            <i class="fa fa-user"></i>
-          </a>
-
-        </span>
-      </div>
-
-    </header>
     <div class="main-content" ng-view></div>
 
 
@@ -63,10 +50,14 @@
     <!-- app services -->
     <script src="/app/services/notification-service.js"></script>
     <script src="/app/services/shopping-list-svc.js"></script>
+    <script src="/app/services/user-svc.js"></script>
 
     <!-- app controllers -->
+    <script src="/app/controllers/header-ctrl.js"></script>
     <script src="/app/controllers/index-ctrl.js"></script>
     <script src="/app/controllers/user-ctrl.js"></script>
+    <script src="/app/controllers/password-ctrl.js"></script>
+
 
     <!-- app directives -->
     <script src="/app/directives/list/list.js"></script>
